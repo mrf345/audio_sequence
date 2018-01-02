@@ -1,5 +1,13 @@
 # audio_sequence 0.1 beta
-### jQuery based script that allows you to control, monitor and play multiple audio files in sequences at a time.
+### [jQuery][d17250b1] based script that allows you to control, monitor and play multiple audio files in sequences at a time.
+
+  [d17250b1]: https://jquery.com "jquery website"
+
+## [Live Demo][d5c4a4d8]
+
+  [d5c4a4d8]: https://audio-sequence.github.io "Live demo"
+
+![Demo GIF](https://audio-sequence.github.io/audio_sequence.gif)
 
 ## Major features:
 - Repeat whole: allows you to repeat a list of audio files as whole for a given number of repeats
@@ -8,18 +16,20 @@
 - Repeat delay: allows you to add a delay in-between repeats
 - Log: gives music player like interface from the console
 
-### Setup:
-```javascript
-<script src='audio_sequence.js' type='text/javascript'></script>
-<script type='text/javascript'>
-  player = audio_sequence({
-    files: ['1.mp3', '2.mp3', '4.mp3'],
-    repeat_forever: 'true'
-  })
-</script>
+## Setup:
+```html
+<head>
+  <script src='audio_sequence.js' type='text/javascript'></script>
+  <script type='text/javascript'>
+    var player = audio_sequence({
+      files: ['1.mp3', '2.mp3', '4.mp3'],
+      repeat_forever: 'true'
+    })
+  </script>
+</head>
 ```
 
-### Options:
+## Options:
 ```javascript
 this.options = {
   files: [], // audio files inserted will be stored in
@@ -30,14 +40,15 @@ this.options = {
   repeat_delay: 0, // to add a time delay between each repeat in seconds
   reverse_order: 'false', // to reverse the order list of audio files
   shuffle_order: 'false', // to randomly shuffle the order of the files list
+  volume: options.volume || 0.5, // to set the default volume > 0 && < 1
   auto_start: 'true', // to auto start playing as the module loads
   cleanup: 'true' // to clean up after existing
 }
 ```
 
-### Useful functions:
-#### To use any of the following functions, you have to get an instance of the constructer, which we did in the Setup section :
-` player = audio_sequence()` </br>
+## Useful functions:
+#### To use any of the following functions, you have to get an instance of the constructor, which we did in the Setup section :
+` var player = audio_sequence()` </br>
 ` player.following_functions()`
 
 #### - Play list :
@@ -70,7 +81,13 @@ this.reverse = function reverse () {
 - List of typical music player like functions
 
 ```javascript
-this.replay = function replay () {}
+this.play = function play () {
+  // to strart playing elements added to the list
+}
+
+this.replay = function replay () {
+  // to restart playing the list
+}
 
 this.stop = function stop () {
     // to stop playing all unended elements
@@ -107,17 +124,22 @@ this.mute = function mute () {
 this.unmute = function unmute () {
   // to unmute all audio elements
 }
+
+this.repeat_forever = function repeatForever () {
+  // to set repeat_forever and replay
+}
+
 ```
 
 #### - Manage files:
 
 ```javascript
 this.add_file = function addFile (file) {
-  // adding an audio file into the playing lis
+  // adding an audio file into the playing list
 }
 
 this.remove_file = function removeFile (id) {
-  // remove file using ID index number, file nASes can mismatch but ids not
+  // remove file using ID index number, file index can mismatch but ids do not
 }
 ```
 
@@ -136,3 +158,6 @@ this.exit = function exit (msg = true) {
   // to gracefully exist, with a thorough cleanup
 }
 ```
+
+## Dependencies:
+- jQuery
