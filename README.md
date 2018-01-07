@@ -161,3 +161,6 @@ this.exit = function exit (msg = true) {
 
 ## Dependencies:
 - jQuery
+
+## Known issues:
+- repeat_each while more than one repeat is set, doesn't play well with the music player like functions next(), previous() ...
