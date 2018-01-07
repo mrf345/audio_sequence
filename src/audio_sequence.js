@@ -19,30 +19,26 @@ Today's lesson: If you've survived callbacks hell, you will survive any other he
 
  */
 
-   // ------------------------------------------------------------------- //
-  // TODO: All my TO DOs are done for now. If you have any, suggest them //
- // ------------------------------------------------------------------- //
-
 // Pythonic extra functions
 // you can force a man outta python, but his python will always come out ..
-var randint = function randint (digits) {
+const randint = function randint (digits) {
 // to generate a random int of certain range, it takes the length of
 // the randint as an arguement
   if (!checkType('number')) throw new TypeError('randint() requires numbers')
   return Math.floor(Math.random() * (10 ** digits))
 }
-var choice = function choice (list) {
+const choice = function choice (list) {
 // to chose randomly from an Array
   if (!(list instanceof Array)) throw new TypeError('choice() taskes only Arrays')
   if (list.length <= 0) throw new Error('choice() requires pupliated Array')
-  var powerOfLength = Math.floor(list.length / 10)
+  let powerOfLength = Math.floor(list.length / 10)
   if (powerOfLength <= 0) powerOfLength = 1
   return list[Math.floor(Math.random() * (10 * powerOfLength))]
 }
-var range = function range (to = 1, from = 0) {
+const range = function range (to = 1, from = 0) {
 // to generate an array of certain range of numbers
-  var rangeOfNumbers = []
-  for (var i = from; to >= i; i += 1) {
+  let rangeOfNumbers = []
+  for (let i = from; to >= i; i += 1) {
     rangeOfNumbers.push(i)
   }
   return rangeOfNumbers
@@ -50,26 +46,26 @@ var range = function range (to = 1, from = 0) {
 
 // Validation functions
 
-var checkType = function checkType (type, args) {
+const checkType = function checkType (type, args) {
   // checking the type of each varible in the passed array
-  for (var a in args) {
+  for (let a in args) {
     if (typeof args[a] !== type) return false
   }
   return true
 }
-var checkBool = function checkBool (args) {
+const checkBool = function checkBool (args) {
   // check if passed args are 'true' or 'false' type
-  for (var a in args) {
+  for (let a in args) {
     if (args[a] !== 'true' && args[a] !== 'false') return false
   }
   return true
 }
-var elementExist = function elementExist (id) {
+const elementExist = function elementExist (id) {
   // checking if an elment exists in the DOM
   // ! sometimes needed when elements are deleted intentionally !
   if (document.getElementById(id) === null) return false; else return true
 }
-var trulyPlaying = function trulyPlaying (id) {
+const trulyPlaying = function trulyPlaying (id) {
   // check if audio element trule playing. To avoide not started yet elements.
   // For thought: If it is indeed truly playing, then equal in truthiness, is its existence !
   if (!elementExist(id)) return false
@@ -77,10 +73,10 @@ var trulyPlaying = function trulyPlaying (id) {
     return true
   } else return false
 }
-var checkFiles = function checkFiles (files = []) {
+const checkFiles = function checkFiles (files = []) {
   // to check if the audio files are loaded and the elements are error free
-  for (var i = 0; files.length > i; i += 1) {
-    var id = 'TEST' + randint(6)
+  for (let i = 0; files.length > i; i += 1) {
+    let id = 'TEST' + randint(6)
     $('body').append($('<audio>').attr('src', files[i]).attr('id', id))
     setTimeout(function () {
       if (elementExist(id)) {
@@ -96,7 +92,7 @@ var checkFiles = function checkFiles (files = []) {
 
 // the bread and butter
 
-var audio_sequence = function AS (options) {
+const AudioSequence = function AS (options) {
   // main class where all the black magic does not happen yet
   if (typeof options !== 'object') options = {}
   this.options = {
@@ -118,7 +114,7 @@ var audio_sequence = function AS (options) {
     this.options.repeats = 1
   }
 
-  var timeouts = function (timeout) { this.defaults.timeouts.push(timeout) } // global timeout to store into the local
+  const timeouts = function (timeout) { this.defaults.timeouts.push(timeout) } // global timeout to store into the local
   this.defaults = {
     elementsID: [],  // Array to store elements ids
     permID: [], // a clone of elmentsID
@@ -152,7 +148,7 @@ var audio_sequence = function AS (options) {
     if (!(this.options.files instanceof Array)) throw new TypeError('audio_sequence(options) files requires Array')
 
     // value validation
-    var c, n; for (n in c = [
+    let c; for (let n in c = [
       this.options.repeats,
       this.options.repeat_delay]
     ) { if (c[n] < 0) throw new Error('audio_sequence(options) repeats and delay require number bigger or equal to 0') }
@@ -183,13 +179,15 @@ var audio_sequence = function AS (options) {
     // to repeat each file of the list for a number of rpeats
     // HEADS UP callbacks hell black magic ahead
     repeats = this.options.repeats,
-    ffs = this.defaults.elementsID, counter = 0, delay = this.options.repeat_delay) {
+    ffs = this.defaults.elementsID,
+    counter = 0,
+    delay = this.options.repeat_delay) {
     this.defaults.ended = false
     this.defaults.store = false
-    var elementID = ffs[0]
+    const elementID = ffs[0]
     this.defaults.store = ffs[0]
     ffs.splice(0, 1)
-    var elementJquery = $('#' + elementID).first() // geting jQuery selection of our element id
+    const elementJquery = $('#' + elementID).first() // geting jQuery selection of our element id
     if (elementJquery.length > 0) { // make sure there are elements
       document.getElementById(elementID).volume = this.options.volume
       if (counter === 0) document.getElementById(elementID).play(); counter += 1 // to establesh ended event
@@ -219,7 +217,7 @@ var audio_sequence = function AS (options) {
     this.defaults.store = false
     this.defaults.currentCounter = counter
     if (this.options.repeat_forever === 'true') this.options.repeats += 1
-    var elementID = this.defaults.elementsID[0]
+    const elementID = this.defaults.elementsID[0]
     this.defaults.elementsID.push(this.defaults.elementsID.slice(0, 1)[0])
     // attaching cuurent element to the end of array, so will not run out of elements regardless of repeats
     this.defaults.elementsID.splice(0, 1)
@@ -237,10 +235,10 @@ var audio_sequence = function AS (options) {
 
   this.random_elements = function randomElements () {
     // to create audio elements to the number of audio files inserted with a random id
-    for (var i = 0; this.options.files.length > i; i += 1) {
+    for (let i = 0; this.options.files.length > i; i += 1) {
       while (true) { // making sure ID not exist already
-        var id = 'AS' + randint(10) // random id
-        var element = $('<audio>').attr('id', id).attr('src', this.options.files[i]) // setting the attributes
+        let id = 'AS' + randint(10) // random id
+        let element = $('<audio>').attr('id', id).attr('src', this.options.files[i]) // setting the attributes
         if (this.defaults.elementsID.indexOf(id) === -1) {
           this.defaults.elementsID.push(id) // pushing to the main elements list
           this.defaults.permID.push(id) // pushing to its clone
@@ -253,7 +251,7 @@ var audio_sequence = function AS (options) {
 
   this.shuffle = function shuffle () {
     // picking items from the array randomly and reinserting them, to create shuffle like effect
-    for (_ in range(randint(1))) { // number of pickings chosen randomly too
+    for (let _ in range(randint(1))) { // number of pickings chosen randomly too
       var i = this.defaults.elementsID.indexOf(choice(this.defaults.elementsID))
       this.defaults.elementsID.push(this.defaults.elementsID[i])
       this.defaults.elementsID.splice(i, 1) // removing the reincerted item
@@ -310,7 +308,7 @@ var audio_sequence = function AS (options) {
 
   this.list = function list (onlyPlaying = false) {
     // to return html ready list of elments
-    var theList = []
+    const theList = []
     $.each(this.defaults.elementsID, function (number, value) {
       if (onlyPlaying && trulyPlaying(value)) {
         theList[number] = document.getElementById(value)
@@ -321,7 +319,7 @@ var audio_sequence = function AS (options) {
 
   this.any_playing = function anyPlaying () {
     // to check if any element is playing currently
-    var sta = false
+    let sta = false
     $.each(this.defaults.permID, function (num, value) {
       if (trulyPlaying(value)) sta = true
     })
@@ -357,7 +355,7 @@ var audio_sequence = function AS (options) {
 
   this.pause = function pause () {
     // to pause the currentlly played element
-    for (var i in this.defaults.permID) {
+    for (let i in this.defaults.permID) {
       if (trulyPlaying(this.defaults.permID[i])) {
         document.getElementById(this.defaults.permID[i]).pause()
         this.defaults.paused = this.defaults.permID[i]
@@ -369,7 +367,7 @@ var audio_sequence = function AS (options) {
   this.resume = function resume () {
     // to resume the currentlly paused element
     if (this.defaults.paused !== 'none') {
-      for (var i in this.defaults.permID) {
+      for (let i in this.defaults.permID) {
         if (trulyPlaying(this.defaults.permID[i])) {
           document.getElementById(this.defaults.permID[i]).pause()
           break
@@ -383,7 +381,7 @@ var audio_sequence = function AS (options) {
 
   this.previous = function previous () {
     // to move the lis of elements backward to play previous element
-    for (var t in this.defaults.timeouts) { clearTimeout(t) }
+    for (let t in this.defaults.timeouts) { clearTimeout(t) }
     this.defaults.timeouts.splice(0, this.defaults.timeouts.length)
     this.abort() // clean up ended events
     this.stop() // stop all playing
@@ -407,7 +405,7 @@ var audio_sequence = function AS (options) {
 
   this.next = function next () {
     // moving the list of elements forward by one element, to play next element
-    for (var t in timeouts) { clearTimeout(t) } // clear all registered timeouts
+    for (let t in timeouts) { clearTimeout(t) } // clear all registered timeouts
     this.defaults.timeouts.splice(0, this.defaults.timeouts.length) // remove all stored timeouts
     this.abort() // clean up ended events
     this.stop() // stop all playing
@@ -474,7 +472,7 @@ var audio_sequence = function AS (options) {
     // adding an audio file into the playing lis
     checkFiles([file])
     while (true) {
-      var id = 'AS' + randint(10) // random id
+      let id = 'AS' + randint(10) // random id
       if (this.defaults.elementsID.indexOf(id) === -1) {
         this.defaults.elementsID.push(id) // pushing to the main elements list
         this.defaults.permID.push(id) // pushing to its clone
@@ -515,7 +513,7 @@ var audio_sequence = function AS (options) {
 
   this.exit = function exit (msg = true) {
     // to gracefully exist, with a thorough cleanup
-    for (var t in this.defaults.timeouts) { clearTimeout(t) }
+    for (let t in this.defaults.timeouts) { clearTimeout(t) }
     this.abort()
     this.stop()
     this.clean_random_elements()

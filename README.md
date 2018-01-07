@@ -21,7 +21,7 @@
 <head>
   <script src='audio_sequence.js' type='text/javascript'></script>
   <script type='text/javascript'>
-    var player = audio_sequence({
+    const player = AudioSequence({
       files: ['1.mp3', '2.mp3', '4.mp3'],
       repeat_forever: 'true'
     })
