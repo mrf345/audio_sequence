@@ -19,80 +19,79 @@ Today's lesson: If you've survived callbacks hell, you will survive any other he
 
  */
 
-// Pythonic extra functions
-// you can force a man outta python, but his python will always come out ..
-const randint = function randint (digits) {
-// to generate a random int of certain range, it takes the length of
-// the randint as an arguement
-  if (!checkType('number')) throw new TypeError('randint() requires numbers')
-  return Math.floor(Math.random() * (10 ** digits))
-}
-const choice = function choice (list) {
-// to chose randomly from an Array
-  if (!(list instanceof Array)) throw new TypeError('choice() taskes only Arrays')
-  if (list.length <= 0) throw new Error('choice() requires pupliated Array')
-  let powerOfLength = Math.floor(list.length / 10)
-  if (powerOfLength <= 0) powerOfLength = 1
-  return list[Math.floor(Math.random() * (10 * powerOfLength))]
-}
-const range = function range (to = 1, from = 0) {
-// to generate an array of certain range of numbers
-  let rangeOfNumbers = []
-  for (let i = from; to >= i; i += 1) {
-    rangeOfNumbers.push(i)
-  }
-  return rangeOfNumbers
-}
-
-// Validation functions
-
-const checkType = function checkType (type, args) {
-  // checking the type of each varible in the passed array
-  for (let a in args) {
-    if (typeof args[a] !== type) return false
-  }
-  return true
-}
-const checkBool = function checkBool (args) {
-  // check if passed args are 'true' or 'false' type
-  for (let a in args) {
-    if (args[a] !== 'true' && args[a] !== 'false') return false
-  }
-  return true
-}
-const elementExist = function elementExist (id) {
-  // checking if an elment exists in the DOM
-  // ! sometimes needed when elements are deleted intentionally !
-  if (document.getElementById(id) === null) return false; else return true
-}
-const trulyPlaying = function trulyPlaying (id) {
-  // check if audio element trule playing. To avoide not started yet elements.
-  // For thought: If it is indeed truly playing, then equal in truthiness, is its existence !
-  if (!elementExist(id)) return false
-  if (!document.getElementById(id).ended && !isNaN(document.getElementById(id).duration)) {
-    return true
-  } else return false
-}
-const checkFiles = function checkFiles (files = []) {
-  // to check if the audio files are loaded and the elements are error free
-  for (let i = 0; files.length > i; i += 1) {
-    let id = 'TEST' + randint(6)
-    $('body').append($('<audio>').attr('src', files[i]).attr('id', id))
-    setTimeout(function () {
-      if (elementExist(id)) {
-        if (document.getElementById(id).error !== null) {
-          this.exit(false)
-          throw new Error('audio_sequence(options=[files]) invalid or unavailable file : ' + document.getElementById(id).src)
-        }
-        $('#' + id).remove()
-      }
-    }, 10) // time out is needed to get the right response after the files are fully loaded
-  }
-}
-
 // the bread and butter
 
 const AudioSequence = function AS (options) {
+  // you can force a man outta python, but his python will always come out ..
+  const randint = function randint (digits) {
+  // to generate a random int of certain range, it takes the length of
+  // the randint as an arguement
+    if (!checkType('number')) throw new TypeError('randint() requires numbers')
+    return Math.floor(Math.random() * (10 ** digits))
+  }
+  const choice = function choice (list) {
+  // to chose randomly from an Array
+    if (!(list instanceof Array)) throw new TypeError('choice() taskes only Arrays')
+    if (list.length <= 0) throw new Error('choice() requires pupliated Array')
+    let powerOfLength = Math.floor(list.length / 10)
+    if (powerOfLength <= 0) powerOfLength = 1
+    return list[Math.floor(Math.random() * (10 * powerOfLength))]
+  }
+  const range = function range (to = 1, from = 0) {
+  // to generate an array of certain range of numbers
+    let rangeOfNumbers = []
+    for (let i = from; to >= i; i += 1) {
+      rangeOfNumbers.push(i)
+    }
+    return rangeOfNumbers
+  }
+
+  // Validation functions
+
+  const checkType = function checkType (type, args) {
+    // checking the type of each varible in the passed array
+    for (let a in args) {
+      if (typeof args[a] !== type) return false
+    }
+    return true
+  }
+  const checkBool = function checkBool (args) {
+    // check if passed args are 'true' or 'false' type
+    for (let a in args) {
+      if (args[a] !== 'true' && args[a] !== 'false') return false
+    }
+    return true
+  }
+  const elementExist = function elementExist (id) {
+    // checking if an elment exists in the DOM
+    // ! sometimes needed when elements are deleted intentionally !
+    if (document.getElementById(id) === null) return false; else return true
+  }
+  const trulyPlaying = function trulyPlaying (id) {
+    // check if audio element trule playing. To avoide not started yet elements.
+    // For thought: If it is indeed truly playing, then equal in truthiness, is its existence !
+    if (!elementExist(id)) return false
+    if (!document.getElementById(id).ended && !isNaN(document.getElementById(id).duration)) {
+      return true
+    } else return false
+  }
+  const checkFiles = function checkFiles (files = []) {
+    // to check if the audio files are loaded and the elements are error free
+    for (let i = 0; files.length > i; i += 1) {
+      let id = 'TEST' + randint(6)
+      $('body').append($('<audio>').attr('src', files[i]).attr('id', id))
+      setTimeout(function () {
+        if (elementExist(id)) {
+          if (document.getElementById(id).error !== null) {
+            this.exit(false)
+            throw new Error('audio_sequence(options=[files]) invalid or unavailable file : ' + document.getElementById(id).src)
+          }
+          $('#' + id).remove()
+        }
+      }, 10) // time out is needed to get the right response after the files are fully loaded
+    }
+  }
+
   // main class where all the black magic does not happen yet
   if (typeof options !== 'object') options = {}
   this.options = {

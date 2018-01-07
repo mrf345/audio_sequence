@@ -48,7 +48,7 @@ this.options = {
 
 ## Useful functions:
 #### To use any of the following functions, you have to get an instance of the constructor, which we did in the Setup section :
-` var player = audio_sequence()` </br>
+` const player = audio_sequence()` </br>
 ` player.following_functions()`
 
 #### - Play list :
