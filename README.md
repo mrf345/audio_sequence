@@ -1,4 +1,4 @@
-# audio_sequence 0.1 beta
+# audio_sequence (Beta)
 ### [jQuery][d17250b1] based script that allows you to control, monitor and play multiple audio files in sequences at a time.
 
   [d17250b1]: https://jquery.com "jquery website"
