@@ -45,7 +45,7 @@ export default function AudioSequence (options) {
 // Core functions
 
   const __init__ = function __init__ (repl = false) {
-    if ($) throw new Error('This script depends fully on jquery, go get it') // early jQuery check
+    if (!$) throw new Error('This script depends fully on jquery, go get it') // early jQuery check
     // type validation
     if (!F.checkBool([
       toreturn.options.repeat_whole,
