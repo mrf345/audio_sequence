@@ -1,0 +1,33 @@
+{
+  "name": "audio_sequence",
+  "version": "0.0.3",
+  "description": "simple module to control, monitor and play multiple audio files in sequences at a time.",
+  "main": "src/audio_sequence.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrf345/audio_sequance.git"
+  },
+  "keywords": [
+    "audio",
+    "sequence",
+    "playlist",
+    "repeater"
+  ],
+  "author": "Mohamed Feddad",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/mrf345/audio_sequance/issues"
+  },
+  "homepage": "https://github.com/mrf345/audio_sequance#readme",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "webpack": "^3.10.0"
+  }
+}

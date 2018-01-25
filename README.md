@@ -9,17 +9,35 @@
 
 ![Demo GIF](https://audio-sequence.github.io/audio_sequence.gif)
 
-## Major features:
+## Features:
 - Repeat whole: allows you to repeat a list of audio files as whole for a given number of repeats
 - Repeat each: allows you to repeat each file of list of audio files for a certain number of repeats
 - Repeat forever: allows you to repeat a list of audio files as whole forever !
 - Repeat delay: allows you to add a delay in-between repeats
-- Log: gives music player like interface from the console
+- Log: logs music player like interface from the console
 
 ## Setup:
+#### - From NPM:
+```bash
+npm install --save audio_sequence
+```
+```javascript
+import AudioSequence from 'audio_sequence'
+const player = AudioSequence(
+  {
+    files: ['1.mp3', '2.mp3', '3.mp3', '4.mp3'],
+    repeat_whole: 'true',
+    repeats: 5
+  }
+)
+player.log(true)
+```
+
+#### - From browser:
 ```html
 <head>
-  <script src='audio_sequence.js' type='text/javascript'></script>
+  <script src='https://rawgit.com/mrf345/audio_sequence/master/bin/bundle.js'
+  type='text/javascript'></script>
   <script type='text/javascript'>
     const player = AudioSequence({
       files: ['1.mp3', '2.mp3', '4.mp3'],
@@ -31,7 +49,7 @@
 
 ## Options:
 ```javascript
-this.options = {
+options = {
   files: [], // audio files inserted will be stored in
   repeats: 0, // number of repeats to obey with some adjustments later
   repeat_whole: 'true', // repeat all files as whole for the number of repeats
@@ -48,31 +66,31 @@ this.options = {
 
 ## Useful functions:
 #### To use any of the following functions, you have to get an instance of the constructor, which we did in the Setup section :
-` const player = audio_sequence()` </br>
+` const player = AudioSequence()` </br>
 ` player.following_functions()`
 
 #### - Play list :
 ```javascript
-this.playlist = function playlist (check) {
+playlist = function playlist (check) {
   // to log the list of audio elements and their properties
 }
 
-this.log = function log (doornot) {
+log = function log (doornot) {
   // to a live list of the playing elements and quit whenever done playing
 }
 
-this.list = function list (onlyPlaying = false) {
+list = function list (onlyPlaying = false) {
   // to return html ready list of elments
 }
 ```
 
 #### - List order :
 ```javascript
-this.shuffle = function shuffle () {
+shuffle = function shuffle () {
   // picking items from the array randomly and reinserting them, to create shuffle like effect
 }
 
-this.reverse = function reverse () {
+reverse = function reverse () {
   // to reverse the order of elements ID list
 }
 ```
@@ -81,51 +99,51 @@ this.reverse = function reverse () {
 - List of typical music player like functions
 
 ```javascript
-this.play = function play () {
+play = function play () {
   // to strart playing elements added to the list
 }
 
-this.replay = function replay () {
+replay = function replay () {
   // to restart playing the list
 }
 
-this.stop = function stop () {
+stop = function stop () {
     // to stop playing all unended elements
 }
 
-this.pause = function pause () {
+pause = function pause () {
   // to pause the currently played element
 }
 
-this.resume = function resume () {
+resume = function resume () {
   // to resume the currently paused element
 }
 
-this.previous = function previous () {
+previous = function previous () {
   // to move the list of elements backward to play previous element
 }
 
-this.next = function next () {
+next = function next () {
   // moving the list of elements forward by one element, to play next element
 }
 
-this.forward = function forward (seconds) {
+forward = function forward (seconds) {
   // to forward the duration of audio element with seconds or portion of it
 }
 
-this.backward = function backward (seconds) {
+backward = function backward (seconds) {
   // to forward the duration of audio element with seconds or portion of it
 }
 
-this.mute = function mute () {
+mute = function mute () {
   // to mute all audio elements
 }
 
-this.unmute = function unmute () {
+unmute = function unmute () {
   // to unmute all audio elements
 }
 
-this.repeat_forever = function repeatForever () {
+repeat_forever = function repeatForever () {
   // to set repeat_forever and replay
 }
 
@@ -134,11 +152,11 @@ this.repeat_forever = function repeatForever () {
 #### - Manage files:
 
 ```javascript
-this.add_file = function addFile (file) {
+add_file = function addFile (file) {
   // adding an audio file into the playing list
 }
 
-this.remove_file = function removeFile (id) {
+remove_file = function removeFile (id) {
   // remove file using ID index number, file index can mismatch but ids do not
 }
 ```
@@ -146,15 +164,15 @@ this.remove_file = function removeFile (id) {
 #### - Cleanup and exit:
 
 ```javascript
-this.abort = function abort () {
+abort = function abort () {
   // make sure all created elements events are off
 }
 
-this.empty = function empty () {
+empty = function empty () {
   // to remove created audio elements from the DOM
 }
 
-this.exit = function exit (msg = true) {
+exit = function exit (msg = true) {
   // to gracefully exist, with a thorough cleanup
 }
 ```
