@@ -84,8 +84,8 @@ export default function AudioSequence (options) {
         if (toreturn.options.reverse_order === 'true') toreturn.reverse()
         if (toreturn.options.shuffle_order === 'true') toreturn.shuffle()
         if (toreturn.options.auto_start === 'true') {
-          if (toreturn.options.repeat_each === 'true' || toreturn.options.repeats === 1) toreturn.each_repeater()
-          else if (toreturn.options.repeat_whole === 'true') toreturn.whole_repeater()
+          if (toreturn.options.repeat_whole === 'true' || toreturn.options.repeats === 1) toreturn.whole_repeater()
+          else if (toreturn.options.repeat_each === 'true') toreturn.each_repeater()
         }
       })
     }
@@ -302,7 +302,8 @@ export default function AudioSequence (options) {
     toreturn.defaults.timeouts.splice(0, toreturn.defaults.timeouts.length)
     toreturn.abort() // clean up ended events
     toreturn.stop() // stop all playing
-    if (toreturn.options.repeat_each === 'true') { // different array manipulation for each_repeater and whole_repeater
+    if (toreturn.options.repeat_each === 'true') {
+       // different array manipulation for each_repeater and whole_repeater
       toreturn.defaults.elementsID = [].concat(
         toreturn.defaults.permID.slice( // getting the missing elements with slice and concating them to the beginning of our array
           toreturn.defaults.permID.length - toreturn.defaults.elementsID.length - 2, // -2 , -1 for each since index != length
@@ -325,6 +326,7 @@ export default function AudioSequence (options) {
   }
 
   toreturn.next = function next () {
+    console.log(toreturn.options.repeats)
     // moving the list of elements forward by one element, to play next element
     for (let t in toreturn.defaults.timeouts) { clearTimeout(t) } // clear all registered timeouts
     toreturn.defaults.timeouts.splice(0, toreturn.defaults.timeouts.length) // remove all stored timeouts
