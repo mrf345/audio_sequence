@@ -326,7 +326,6 @@ export default function AudioSequence (options) {
   }
 
   toreturn.next = function next () {
-    console.log(toreturn.options.repeats)
     // moving the list of elements forward by one element, to play next element
     for (let t in toreturn.defaults.timeouts) { clearTimeout(t) } // clear all registered timeouts
     toreturn.defaults.timeouts.splice(0, toreturn.defaults.timeouts.length) // remove all stored timeouts
