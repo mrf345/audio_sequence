@@ -1,6 +1,6 @@
 {
   "name": "audio_sequence",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "simple module to control, monitor and play multiple audio files in sequences at a time.",
   "main": "src/audio_sequence.js",
   "scripts": {
@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/mrf345/audio_sequance#readme",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "jquery": "^3.3.1",
     "myrandom": "0.0.2"
   },
