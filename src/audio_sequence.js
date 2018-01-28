@@ -1,5 +1,7 @@
 import $ from 'jquery'
 import F from './exFunctions.js'
+import { createUniqueAudio, promiseAudio, Store } from './AudioLoader'
+
 /*
   This Source Code Form is subject to the terms of the Mozilla Public
   License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -70,15 +72,23 @@ export default function AudioSequence (options) {
   ) throw new Error('audio_sequence(options=[files]) requires at least one audio file to if auto_start is "true"')
     if (toreturn.options.volume > 1 || toreturn.options.volume < 0) throw new Error('audio_sequence(options) volume must be float between 0, 1')
     var apply = function apply () {
-      F.checkFiles(toreturn.options.files) // files validity
+      // F.checkFiles(toreturn.options.files) // files validity
       // apply options and redirections
-      randomElements() // creates random audio elements accourding to toreturn.options.files
-      if (toreturn.options.reverse_order === 'true') toreturn.reverse()
-      if (toreturn.options.shuffle_order === 'true') toreturn.shuffle()
-      if (toreturn.options.auto_start === 'true') {
-        if (toreturn.options.repeat_each === 'true' || toreturn.options.repeats === 1) toreturn.each_repeater()
-        else if (toreturn.options.repeat_whole === 'true') toreturn.whole_repeater()
-      }
+      // randomElements() // creates random audio elements accourding to toreturn.options.files
+      Promise.all( // creating testing and creating unique audio elements
+        toreturn.options.files.map((u) => promiseAudio(u))
+      ).then((items) => {
+        items.map((item) => createUniqueAudio(item)).forEach(id => {
+          toreturn.defaults.elementsID.push(id)
+          toreturn.defaults.permID.push(id)
+        })
+        if (toreturn.options.reverse_order === 'true') toreturn.reverse()
+        if (toreturn.options.shuffle_order === 'true') toreturn.shuffle()
+        if (toreturn.options.auto_start === 'true') {
+          if (toreturn.options.repeat_each === 'true' || toreturn.options.repeats === 1) toreturn.each_repeater()
+          else if (toreturn.options.repeat_whole === 'true') toreturn.whole_repeater()
+        }
+      })
     }
     if (repl) { // escape event, if it is a relpay
       apply()
@@ -147,26 +157,10 @@ export default function AudioSequence (options) {
 
 // Controling arrays and elements
 
-  const randomElements = function randomElements () {
-    // to create audio elements to the number of audio files inserted with a random id
-    for (let i = 0; toreturn.options.files.length > i; i += 1) {
-      while (true) { // making sure ID not exist already
-        let id = 'AS' + F.randint(10) // random id
-        let element = $('<audio>').attr('id', id).attr('src', toreturn.options.files[i]) // setting the attributes
-        if (toreturn.defaults.elementsID.indexOf(id) === -1) {
-          toreturn.defaults.elementsID.push(id) // pushing to the main elements list
-          toreturn.defaults.permID.push(id) // pushing to its clone
-          $('body').append(element)
-          break
-        }
-      }
-    }
-  }
-
   toreturn.shuffle = function shuffle () {
     // picking items from the array randomly and reinserting them, to create shuffle like effect
-    F.range(F.randint(1)).map(() => { // number of pickings chosen randomly too
-      var i = toreturn.defaults.elementsID.indexOf(F.choice(toreturn.defaults.elementsID))
+    F.range(Store.randint(1)).map(() => { // number of pickings chosen randomly too
+      var i = toreturn.defaults.elementsID.indexOf(Store.choice(toreturn.defaults.elementsID))
       toreturn.defaults.elementsID.push(toreturn.defaults.elementsID[i])
       toreturn.defaults.elementsID.splice(i, 1) // removing the reincerted item
     })
@@ -387,17 +381,12 @@ export default function AudioSequence (options) {
 // Managing files
 
   toreturn.add_file = function addFile (file) {
-    // adding an audio file into the playing lis
-    F.checkFiles([file])
-    while (true) {
-      let id = 'AS' + F.randint(10) // random id
-      if (toreturn.defaults.elementsID.indexOf(id) === -1) {
-        toreturn.defaults.elementsID.push(id) // pushing to the main elements list
-        toreturn.defaults.permID.push(id) // pushing to its clone
-        $('body').append($('<audio>').attr('id', id).attr('src', file))
-        break
-      }
-    }
+    // to add audio element after testing it with Promise
+    promiseAudio(file).then((element) => {
+      let id = createUniqueAudio(element)
+      toreturn.defaults.elementsID.push(id)
+      toreturn.defaults.permID.push(id)
+    })
   }
 
   toreturn.remove_file = function removeFile (id) {

@@ -1,20 +1,8 @@
 import $ from 'jquery'
+import { Store } from './AudioLoader'
+
 const F = {
   // you can force a man outta python, but his python will always come out ..
-  randint: function randint (digits) {
-    // to generate a random int of certain range, it takes the length of
-    // the randint as an arguement
-    if (!F.checkType('number')) throw new TypeError('randint() requires numbers')
-    return Math.floor(Math.random() * (10 ** digits))
-  },
-  choice: function choice (list) {
-    // to chose randomly from an Array
-    if (!(list instanceof Array)) throw new TypeError('choice() taskes only Arrays')
-    if (list.length <= 0) throw new Error('choice() requires pupliated Array')
-    let powerOfLength = Math.floor(list.length / 10)
-    if (powerOfLength <= 0) powerOfLength = 1
-    return list[Math.floor(Math.random() * (10 * powerOfLength))]
-  },
   range: function range (to = 1, from = 0) {
     // to generate an array of certain range of numbers
     let rangeOfNumbers = []
@@ -55,7 +43,7 @@ const F = {
   checkFiles: function checkFiles (files = []) {
     // to check if the audio files are loaded and the elements are error free
     for (let i = 0; files.length > i; i += 1) {
-      let id = 'TEST' + F.randint(6)
+      let id = 'TEST' + Store.randint(6)
       $('body').append($('<audio>').attr('src', files[i]).attr('id', id))
       setTimeout(function () {
         if (F.elementExist(id)) {
