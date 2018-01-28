@@ -31,7 +31,6 @@ export default function AudioSequence (options) {
     toreturn.options.repeats = 1
   }
 
-  const timeouts = function (timeout) { toreturn.defaults.timeouts.push(timeout) } // global timeout to store into the local
   toreturn.defaults = {
     elementsID: [],  // Array to store elements ids
     permID: [], // a clone of elmentsID
@@ -111,19 +110,21 @@ export default function AudioSequence (options) {
     const elementID = ffs[0]
     toreturn.defaults.store = ffs[0]
     ffs.splice(0, 1)
-    const elementJquery = $('#' + elementID).first() // geting jQuery selection of our element id
-    if (elementJquery.length > 0) { // make sure there are elements
-      document.getElementById(elementID).volume = toreturn.options.volume
+    const element = document.getElementById(elementID)
+    if (element !== null) { // make sure there are elements
+      element.volume = toreturn.options.volume
       if (counter === 0) document.getElementById(elementID).play(); counter += 1 // to establesh ended event
-      elementJquery.on('ended', function () { // main event that chains elements ending to each other properly
-        if (repeats > counter) document.getElementById(elementID).play() // making sure to play it once if repeat is 1
+      $('#' + elementID).first().on('ended', (e) => { // main event that chains elements ending to each other properly
+        if (repeats > counter) element.play() // making sure to play it once if repeat is 1
         counter += 1
         if (counter >= repeats) { // if the repeats for each is due
           // adjusting duration if repeats for each is 1
-          if (repeats === 1) var timing = 0; else timing = document.getElementById(elementID).duration.toFixed(3) * 1000
+          if (repeats === 1) var timing = 0; else timing = element.duration.toFixed(3) * 1000
           // recursing this function with a time out of the audio duration
-          timeouts(setTimeout(function () { toreturn.each_repeater(repeats, ffs, 0) }, timing + delay))
-          elementJquery.off('ended') // removing the current ended event listener
+          toreturn.defaults.timeouts.push(
+            setTimeout(function () { toreturn.each_repeater(repeats, ffs, 0) }, timing + delay)
+          )
+          $('#' + elementID).off('ended')
         }
       })
     } else {
@@ -142,17 +143,21 @@ export default function AudioSequence (options) {
     toreturn.defaults.currentCounter = counter
     if (toreturn.options.repeat_forever === 'true') toreturn.options.repeats += 1
     const elementID = toreturn.defaults.elementsID[0]
+    const element = document.getElementById(elementID)
     toreturn.defaults.elementsID.push(toreturn.defaults.elementsID.slice(0, 1)[0])
     // attaching cuurent element to the end of array, so will not run out of elements regardless of repeats
     toreturn.defaults.elementsID.splice(0, 1)
     if (toreturn.options.repeats > Math.floor(counter / toreturn.defaults.permID.length)) { // deviding the sum of counter on the number of elements to get proper counter
-      document.getElementById(elementID).volume = toreturn.options.volume
-      document.getElementById(elementID).play() // to play and establish ended event
-      $('#' + elementID).first().on('ended', function () { // main event that chains elements ending to each other properly
-        timeouts(setTimeout(function () { wholeRepeater(counter + 1, delay) }, delay)) // recursion bond to the end with time out of repeat_delay
-        $('#' + elementID).first().off('ended') // removing the current ended event listener
+      element.volume = toreturn.options.volume
+      element.play() // to play and establish ended event
+      // element.addEventListener('ended', doEvent) // main event that chains elements ending to each other properly
+      $('#' + elementID).first().on('ended', function () {
+        toreturn.defaults.timeouts.push(
+          setTimeout(function () { wholeRepeater(counter + 1, delay) }, delay) // recursion bond to the end with time out of repeat_delay
+        )
+        $('#' + elementID).off('ended')
       })
-    } else { toreturn.abort(); if (toreturn.options.cleanup === 'true') toreturn.exit(false) } // make sure all created elements events are off and element removed
+    } else { toreturn.abort(); if (toreturn.options.cleanup === 'true') toreturn.exit(false) } // 11make sure all created elements events are off and element removed
   }
 
 // Controling arrays and elements
@@ -303,21 +308,25 @@ export default function AudioSequence (options) {
           toreturn.defaults.permID.length - toreturn.defaults.elementsID.length - 2, // -2 , -1 for each since index != length
           toreturn.defaults.permID.length - toreturn.defaults.elementsID.length), // the number of elements to slice
           toreturn.defaults.elementsID)
-      timeouts(setTimeout(function () {
-        toreturn.each_repeater()
-      }, 10 * toreturn.defaults.permID.length))
+      toreturn.defaults.timeouts.push(
+        setTimeout(function () {
+          toreturn.each_repeater()
+        }, 10 * toreturn.defaults.permID.length)
+      )
     } else {
       toreturn.defaults.elementsID.unshift(toreturn.defaults.elementsID.pop())
       toreturn.defaults.elementsID.unshift(toreturn.defaults.elementsID.pop())
-      timeouts(setTimeout(function () { // faced some strange callbacks issue here, probabely due to the cleanup functions
-        toreturn.whole_repeater(toreturn.defaults.currentCounter, toreturn.options.repeat_delay) // having to loop which takes time !
-      }, 10 * toreturn.defaults.elementsID.length)) // timing it out is needed to avoide another callbacks hell !
+      toreturn.defaults.timeouts.push(
+        setTimeout(function () { // faced some strange callbacks issue here, probabely due to the cleanup functions
+          toreturn.whole_repeater(toreturn.defaults.currentCounter, toreturn.options.repeat_delay) // having to loop which takes time !
+        }, 10 * toreturn.defaults.elementsID.length) // timing it out is needed to avoide another callbacks hell !
+      )
     }
   }
 
   toreturn.next = function next () {
     // moving the list of elements forward by one element, to play next element
-    for (let t in timeouts) { clearTimeout(t) } // clear all registered timeouts
+    for (let t in toreturn.defaults.timeouts) { clearTimeout(t) } // clear all registered timeouts
     toreturn.defaults.timeouts.splice(0, toreturn.defaults.timeouts.length) // remove all stored timeouts
     toreturn.abort() // clean up ended events
     toreturn.stop() // stop all playing
