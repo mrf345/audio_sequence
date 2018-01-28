@@ -248,9 +248,8 @@ export default function AudioSequence (options) {
   toreturn.play = function play () {
     // to strart playing elements added to the list
     if (toreturn.defaults.elementsID.length !== 0 && toreturn.defaults.ended) {
-      if (toreturn.options.repeat_each === 'true' || toreturn.options.repeats === 1) {
-        toreturn.each_repeater()
-      } else toreturn.whole_repeater()
+      if (toreturn.options.repeat_each === 'true') toreturn.each_repeater()
+      else toreturn.whole_repeater()
     }
   }
 
