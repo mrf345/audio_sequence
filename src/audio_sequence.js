@@ -436,8 +436,10 @@ export default function AudioSequence (options) {
     for (let t in toreturn.defaults.timeouts) { clearTimeout(t) }
     toreturn.abort()
     toreturn.stop()
-    cleanRandomElements()
-    if (rpl) toreturn.empty()
+    if (rpl) {
+      cleanRandomElements()
+      toreturn.empty()
+    }
     toreturn.defaults.ended = true
     if (msg) setTimeout(function () { console.log('audio_sequence exited. till next time !') }, 50)
   }
