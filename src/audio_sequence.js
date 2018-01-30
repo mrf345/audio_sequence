@@ -254,12 +254,8 @@ export default function AudioSequence (options) {
   }
 
   toreturn.replay = function replay () {
-    toreturn.exit(false, false) // cleans up everything first
-    // __init__(true) // lets not reinvent the wheel !
-    toreturn.defaults.elementsID.splice(0, toreturn.defaults.elementsID.length)
-    toreturn.defaults.permID.forEach(id => toreturn.defaults.elementsID.push(id))
-    if (toreturn.options.repeat_whole === 'true' || toreturn.options.repeats === 1) toreturn.whole_repeater()
-    else toreturn.each_repeater()
+    toreturn.exit(false) // cleans up everything first
+    __init__(true) // lets not reinvent the wheel !
   }
 
   toreturn.stop = function stop () {
@@ -431,15 +427,13 @@ export default function AudioSequence (options) {
     $.each(toreturn.defaults.permID, function (_, v) { $('#' + v).remove() })
   }
 
-  toreturn.exit = function exit (msg = true, rpl = true) {
+  toreturn.exit = function exit (msg = true) {
     // to gracefully exist, with a thorough cleanup
     for (let t in toreturn.defaults.timeouts) { clearTimeout(t) }
     toreturn.abort()
     toreturn.stop()
-    if (rpl) {
-      cleanRandomElements()
-      toreturn.empty()
-    }
+    cleanRandomElements()
+    toreturn.empty()
     toreturn.defaults.ended = true
     if (msg) setTimeout(function () { console.log('audio_sequence exited. till next time !') }, 50)
   }
