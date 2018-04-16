@@ -89,13 +89,15 @@ export default function AudioSequence (options) {
         }
       })
     }
-    if (repl) { // escape event, if it is a relpay
-      apply()
-    } else {
-      window.addEventListener('load', function () {
-        apply()
-      })
-    }
+    // escape event, if it is a relpay or window already loaded
+    repl || document.readyState === "complete" ? apply() : window.addEventListener('load', () => apply())
+    // if (repl) {
+    //   apply()
+    // } else {
+    //   window.addEventListener('load', function () {
+    //     apply()
+    //   })
+    // }
   }
 
   toreturn.each_repeater = function eachRepeater (
