@@ -1,6 +1,6 @@
 {
   "name": "audio_sequence",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "simple module to control, monitor and play multiple audio files in sequences at a time.",
   "main": "src/audio_sequence.js",
   "scripts": {
