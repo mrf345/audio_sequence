@@ -50,7 +50,7 @@ export default class AudioSequence {
     }
 
     // Loading mix-ins. since multi inheritance not supported yet 🤪
-    this.mixIns = ['utils', 'fetcher', 'controller', 'repeater', 'logger']
+    this.mixIns = ['utils', 'constants', 'fetcher', 'controller', 'repeater', 'logger']
     this.mixIns.forEach(mixin => Object.assign(this, require(`./${mixin}`)))
 
     if (this.autoStart) {
@@ -60,7 +60,7 @@ export default class AudioSequence {
   }
 
   handleEnding (event) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const element = this.playlist.find(ele => ele.src === event.target.src)
       const eleIndex = this.playlist.indexOf(element)
       const { nextIndex, nextItem } = this.shuffleOrder
@@ -75,7 +75,7 @@ export default class AudioSequence {
 
         // will have to handle new Promise here. taking `.play` anywhere else is illegal now 🤣
         const promise = (this.repeatEach || this.repeatWhole) && this.repeatDelay
-          ? new Promise((resolve) => setTimeout(() => resolve(element.play()), this.repeatDelay))
+          ? new Promise(resolve => setTimeout(() => resolve(element.play()), this.repeatDelay))
           : element.play()
 
         return promise && promise.then
@@ -131,7 +131,7 @@ export default class AudioSequence {
 
   load () {
     if (this.hasFiles()) this.tearDown()
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.fetchAll()
         .then(stack => {
           if (stack.length) { // keep original order

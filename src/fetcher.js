@@ -29,11 +29,19 @@ function loader (file = '') {
     element.volume = this.volume
     element.src = file
 
-    document.body.appendChild(element)
+    document.body.prepend(element)
   })
 }
 
 module.exports = {
+  handlePlay (promise) {
+    // if auto-play is disabled, will prompt the user with instructions.
+    promise.catch(error =>
+      !this.isAutoPlayAllowed(error) && this.createOverlayInstructions())
+
+    return promise && promise.then && this.prePromises.push(promise)
+  },
+
   add (file = '') {
     const exists = !!this.playlist.find(e => e.src === file)
 
@@ -69,7 +77,7 @@ module.exports = {
   fetchAll () {
     this.loading = true
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       Promise.all(this.files.map(file => loader.bind(this)(file)))
         .then(stack => {
           this.loading = false

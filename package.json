@@ -34,5 +34,26 @@
     "babel-loader": "^8.0.6",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
+  },
+  "standard": {
+    "globals": [
+      "beforeEach",
+      "afterEach",
+      "it",
+      "test",
+      "assert",
+      "window",
+      "fetch",
+      "document",
+      "expect",
+      "describe",
+      "jest"
+    ]
+  },
+  "browser": {
+    "node-fetch": false,
+    "jsdom": false,
+    "https": false,
+    "fs": false
   }
 }
