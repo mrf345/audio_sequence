@@ -1,14 +1,4 @@
 # audio_sequence (Beta)
-
-## TODO:
-
-- [ ] Fix babeling IE11 Bug
-- [x] Add repeat delay to handle endings
-- [ ] Add unit tests 
-- [ ] Move project and setup configuration files `nodejs`, `babel`, `webpack`
-- [ ] Update README to reflect changes
-- [ ] Setup travis and coveralls
-
 ### [jQuery][d17250b1] based script that allows you to control, monitor and play multiple audio files in sequences at a time.
 
   [d17250b1]: https://jquery.com "jquery website"

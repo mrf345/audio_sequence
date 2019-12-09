@@ -2,10 +2,9 @@
   "name": "audio_sequence",
   "version": "0.0.11",
   "description": "simple module to control, monitor and play multiple audio files in sequences at a time.",
-  "main": "lib/index.js",
+  "main": "src/audio_sequence.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -24,15 +23,13 @@
   },
   "homepage": "https://github.com/mrf345/audio_sequance#readme",
   "dependencies": {
-    "jsdom": "^15.2.1"
+    "jquery": "^3.3.1",
+    "myrandom": "0.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/polyfill": "^7.7.0",
-    "@babel/preset-env": "^7.7.5",
-    "babel-loader": "^8.0.6",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "babel-core": "^6.26.0",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
   }
 }

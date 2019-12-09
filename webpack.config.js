@@ -1,20 +1,15 @@
-const { resolve } = require('path')
-
+const path = require('path')
+const Mini = require('babel-minify-webpack-plugin')
 module.exports = {
-  entry: './src/index.js',
+  entry: path.join(path.resolve(__dirname, 'src'), 'audio_sequence.js'),
   output: {
-    path: resolve(__dirname, 'bin'),
-    filename: 'AudioSequence.min.js',
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'bin'),
     library: 'AudioSequence',
     libraryTarget: 'window',
     libraryExport: 'default'
   },
-  plugins: [],
-  module: {
-    rules: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      use: { loader: 'babel-loader' }
-    }]
-  }
+  plugins: [
+    new Mini()
+  ]
 }
