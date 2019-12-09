@@ -29,9 +29,18 @@ module.exports = {
     this[pre ? 'prePromises' : 'postPromises'].push(promise)
   },
 
-  isChrome () { return navigator.vendor === 'Google Inc.' && navigator.userAgent.includes('Chrome') },
-  isFirefox () { return !this.isChrome() && navigator.userAgent.includes('Firefox') },
-  isSafari () { return !this.isChrome() && navigator.userAgent.includes('Safari') },
-  isEdge () { return !this.isChrome() && navigator.userAgent.includes('Edge') },
-  isAutoPlayAllowed (error) { return !error.name === 'NotAllowedError' }
+  handleAutoPlayNotAllowed () {
+    const audio = document.createElement('audio')
+    audio.src = this.silence
+    const promise = audio.play()
+
+    promise && promise.catch && promise.catch(error =>
+      !this.isAutoPlayEnabled(error) && this.createOverlayInstructions())
+  },
+
+  isChrome () { return window.navigator.vendor === 'Google Inc.' && window.navigator.userAgent.includes('Chrome') },
+  isFirefox () { return !this.isChrome() && window.navigator.userAgent.includes('Firefox') },
+  isSafari () { return !this.isChrome() && window.navigator.userAgent.includes('Safari') },
+  isEdge () { return !this.isChrome() && window.navigator.userAgent.includes('Edge') },
+  isAutoPlayEnabled (error) { return !(error.name === 'NotAllowedError') }
 }
