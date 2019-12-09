@@ -14,13 +14,9 @@ module.exports = {
   },
 
   delay (callback = Function, mSeconds = 1000) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       return setTimeout(() => resolve(callback()), mSeconds || this.repeatDelay)
     })
-  },
-
-  handlePlay (promise) {
-    return promise && promise.then && this.prePromises.push(promise)
   },
 
   findFile (file = '') {
@@ -28,8 +24,14 @@ module.exports = {
   },
 
   addPromise (callback = Function, pre = false) {
-    const promise = new Promise((resolve) => callback(resolve))
+    const promise = new Promise(resolve => callback(resolve))
 
     this[pre ? 'prePromises' : 'postPromises'].push(promise)
-  }
+  },
+
+  isChrome () { return navigator.vendor === 'Google Inc.' && navigator.userAgent.includes('Chrome') },
+  isFirefox () { return !this.isChrome() && navigator.userAgent.includes('Firefox') },
+  isSafari () { return !this.isChrome() && navigator.userAgent.includes('Safari') },
+  isEdge () { return !this.isChrome() && navigator.userAgent.includes('Edge') },
+  isAutoPlayAllowed (error) { return !error.name === 'NotAllowedError' }
 }

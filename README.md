@@ -8,6 +8,8 @@
 - [ ] Move project and setup configuration files `nodejs`, `babel`, `webpack`
 - [ ] Update README to reflect changes
 - [ ] Setup travis and coveralls
+- [ ] Update and cleanup `README` to reflect changes
+- [x] Add cross-platform auto-play warning
 
 ### [jQuery][d17250b1] based script that allows you to control, monitor and play multiple audio files in sequences at a time.
 
