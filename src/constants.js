@@ -1,4 +1,7 @@
 module.exports = {
+  silence: (
+    'data:audio/wave;base64,UklGRjIAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAAABmYWN0' +
+    'BAAAAAAAAABkYXRhAAAAAA=='),
   createOverlayInstructions () {
     const id = 'OverLayAutoPlay'
     const exists = document.getElementById(id)
@@ -9,6 +12,7 @@ module.exports = {
     const header = document.createElement('h2')
     const image = document.createElement('img')
 
+    overlay.id = id
     overlay.style.margin = '0%'
     overlay.style.minWidth = '100%'
     overlay.style.minHeight = '100vh'
@@ -23,7 +27,7 @@ module.exports = {
 
     header.style.color = 'rgb(255, 255, 255)'
     header.style.fontFamily = 'Georgia, Times, serif'
-    header.style.textShadow = '0 0 20px rgba(255,255,255,0.3)'
+    header.style.textShadow = '0 0 25px rgba(255,255,255,0.4)'
     header.style.fontSize = '130%'
     header.style.marginBottom = '5%'
 

@@ -4,8 +4,11 @@
   "description": "simple module to control, monitor and play multiple audio files in sequences at a time.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
+    "test": "standard ./src/* && jest ./src",
+    "build": "./pages.sh",
+    "format": "standard --fix ./src/*",
+    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "push": "babel --config-file ./babel.config.js src/ --out-dir lib/ && npm version patch && npm login && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -30,8 +33,13 @@
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "@babel/polyfill": "^7.7.0",
-    "@babel/preset-env": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@types/jest": "^24.0.23",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
+    "standard": "^14.3.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
@@ -51,7 +59,6 @@
     ]
   },
   "browser": {
-    "node-fetch": false,
     "jsdom": false,
     "https": false,
     "fs": false

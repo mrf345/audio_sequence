@@ -10,8 +10,6 @@
   <script src="./AudioSequence.min.js"></script>
   <script>
   var Player = new AudioSequence({
-    autoLoad: true,
-    autoStart: true,
     files: [
       'music/1.mp3',
       'music/2.mp3',
@@ -22,9 +20,7 @@
 
     Player.load()
     .then(function(audios) { 
-      console.log('Files loaded:', audios)
       Player.play()
-      // audios[0].play()
     }).catch(function(error) { console.warn(error) })
   </script>
 </body>

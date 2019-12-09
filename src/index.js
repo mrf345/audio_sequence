@@ -23,7 +23,6 @@ export default class AudioSequence {
     this.shuffleOrder = options.shuffle_order || false // to randomly shuffle the order of the files list
     this.volume = options.volume || 0.5 // to set the default volume
     this.autoStart = options.auto_start || false // to auto load and start playing as the module loads
-    this.cleanup = options.cleanup || true // to clean up after existing
 
     this.playlist = [] // stack of audio elements playing
     this.current = 0 // index of the currently playing
@@ -52,6 +51,9 @@ export default class AudioSequence {
     // Loading mix-ins. since multi inheritance not supported yet 🤪
     this.mixIns = ['utils', 'constants', 'fetcher', 'controller', 'repeater', 'logger']
     this.mixIns.forEach(mixin => Object.assign(this, require(`./${mixin}`)))
+
+    // if auto-play is disabled, will prompt the user with instructions.
+    this.handleAutoPlayNotAllowed()
 
     if (this.autoStart) {
       if (document.readyState === 'complete') this.load()

@@ -1,51 +1,52 @@
-function loader (file = '') {
-  return new Promise((resolve, reject) => {
-    const element = document.createElement('audio')
-
-    element.oncanplaythrough = () => resolve(element)
-
-    element.onerror = (e) => {
-      const error = `Failed to load ${file}. ${e}`
-      this.errors.push(error)
-      return reject(error)
-    }
-
-    element.onended = event => {
-      this.loading = true
-
-      return Promise.all(this.prePromises)
-        .then(values => this.handleEnding(event))
-        .then(ele => Promise.all(this.postPromises))
-        .then(values => {
-          this.prePromises = []
-          this.postPromises = []
-          this.loading = false
-        }).catch(e => console.warn(e))
-    }
-
-    element.preload = 'auto'
-    element.display = 'none'
-    element.controls = false
-    element.volume = this.volume
-    element.src = file
-
-    document.body.prepend(element)
-  })
-}
-
 module.exports = {
-  handlePlay (promise) {
-    // if auto-play is disabled, will prompt the user with instructions.
-    promise.catch(error =>
-      !this.isAutoPlayAllowed(error) && this.createOverlayInstructions())
+  loader (file = '') {
+    return new Promise((resolve, reject) => {
+      const element = document.createElement('audio')
 
-    return promise && promise.then && this.prePromises.push(promise)
+      element.oncanplaythrough = () => resolve(element)
+
+      element.onerror = (e) => {
+        const error = `Failed to load ${file}. ${e}`
+        this.errors.push(error)
+        return reject(error)
+      }
+
+      element.onended = event => {
+        this.loading = true
+
+        return Promise.all(this.prePromises)
+          .then(values => this.handleEnding(event))
+          .then(ele => Promise.all(this.postPromises))
+          .then(values => {
+            this.prePromises = []
+            this.postPromises = []
+            this.loading = false
+          }).catch(e => console.warn(e))
+      }
+
+      element.preload = 'auto'
+      element.display = 'none'
+      element.controls = false
+      element.volume = this.volume
+      element.src = file
+
+      document.body.prepend(element)
+    })
+  },
+
+  handlePlay (promise) {
+    if (promise) {
+      promise.catch(error =>
+        !this.isAutoPlayEnabled(error) && this.createOverlayInstructions())
+
+      return promise.then && this.prePromises.push(promise)
+    }
   },
 
   add (file = '') {
     const exists = !!this.playlist.find(e => e.src === file)
 
-    !exists && loader.bind(this)(file).then(element => {
+    !exists && this.loader(file).then(element => {
       this.playlist.push(element)
 
       if (this.autoStart) {
@@ -78,7 +79,7 @@ module.exports = {
     this.loading = true
 
     return new Promise(resolve => {
-      Promise.all(this.files.map(file => loader.bind(this)(file)))
+      Promise.all(this.files.map(file => this.loader.bind(this)(file)))
         .then(stack => {
           this.loading = false
           resolve(stack)
