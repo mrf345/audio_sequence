@@ -41,7 +41,10 @@ module.exports = {
   isFirefox () { return !this.isChrome() && window.navigator.userAgent.includes('Firefox') },
   isEdge () { return !this.isChrome() && window.navigator.userAgent.includes('Edge') },
   isOpera () { return !this.isChrome() && window.navigator.userAgent.includes('OPR') },
-  isSafari () { return !this.isOpera() && window.navigator.userAgent.includes('Safari') },
+  isSafari () {
+    return !this.isOpera() && !this.isChrome() &&
+           window.navigator.userAgent.includes('Safari')
+  },
   isChrome () {
     return window.navigator.vendor === 'Google Inc.' &&
            window.navigator.userAgent.includes('Chrome') &&
