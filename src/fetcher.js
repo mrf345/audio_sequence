@@ -30,7 +30,7 @@ module.exports = {
       element.volume = this.volume
       element.src = file
 
-      document.body.prepend(element)
+      this.waitForDOM(() => document.body.appendChild(element))
     })
   },
 
@@ -79,7 +79,7 @@ module.exports = {
     this.loading = true
 
     return new Promise(resolve => {
-      Promise.all(this.files.map(file => this.loader.bind(this)(file)))
+      Promise.all(this.files.map(file => this.loader(file)))
         .then(stack => {
           this.loading = false
           resolve(stack)
