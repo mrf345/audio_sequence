@@ -3,14 +3,14 @@ MESSAGE="Updating bin/* with latest source-code"
 
 git stash save "$STASH"
 npx webpack
-git add bin/*
+git add bin/AudioSequence.min.js
 
 if [[ `git status --porcelain` ]]; then
   git commit -m "$MESSAGE"
 fi
 
 git checkout gh-pages
-git checkout testing bin/*
+git checkout testing bin/AudioSequence.min.js
 if [[ `git status --porcelain` ]]; then
   git commit -m "$MESSAGE" && \
   git push origin gh-pages
