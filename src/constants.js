@@ -48,6 +48,7 @@ module.exports = {
 
     image.src = Object.keys(this.demoSources()).find(src => !!this.demoSources()[src])
     image.style.width = '90%'
+    image.style.marginLeft = '5%'
     image.alt = 'How to enable Auto-Play permission.'
 
     div.appendChild(header)
