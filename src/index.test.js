@@ -13,6 +13,9 @@ function mockProperty (event, func) {
 
 function commonSetup (self) {
   ['oncanplaythrough', 'onerror', 'onended'].forEach(e => mockProperty(e))
+  self.error = Error()
+  self.error.name = 'NotAllowedError'
+  window.HTMLMediaElement.prototype.play = () => Promise.reject(self.error)
   self.host = 'http://faketesting-audiosequence.org/'
   self.files = Array(4).fill(self.host).map((f, i) => `${f}${i}.mp3`)
   self.player = new AudioSequence({ files: self.files })
@@ -66,10 +69,6 @@ describe('Testing module main functionalities and units.', () => {
   })
 
   it('Test autoplay policy instructions overlay', () => {
-    const error = Error()
-    error.name = 'NotAllowedError'
-    window.HTMLMediaElement.prototype.play = () => Promise.reject(error)
-
     self.player.autoStart = true
     return self.player.load()
       .then(files => expect(document.getElementById('OverLayAutoPlay')).toBeTruthy())

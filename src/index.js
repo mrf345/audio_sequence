@@ -13,6 +13,8 @@ export default class AudioSequence {
    * @param {object} options contains the module options.
    */
   constructor (options = {}) {
+    const AUTOPLAY_MSG = 'AutoPlay permission is lacking. Enable it then reload:'
+
     this.files = options.files || [] // files inserted will be stored in
     this.repeats = options.repeats || 1 // number of repeats to obey with some adjustments later
     this.repeatWhole = options.repeat_whole || true // repeat all files as whole
@@ -23,6 +25,8 @@ export default class AudioSequence {
     this.shuffleOrder = options.shuffle_order || false // to randomly shuffle the order of the files list
     this.volume = options.volume || 0.5 // to set the default volume
     this.autoStart = options.auto_start || false // to auto load and start playing as the module loads
+    this.autoplayWarning = options.autoplay_warning || true // to display warning if AutoPlay's disabled
+    this.autoplayMessage = options.autoplay_message || AUTOPLAY_MSG // message to show if AutoPlay's disabled
 
     this.playlist = [] // stack of audio elements playing
     this.current = 0 // index of the currently playing
@@ -55,10 +59,8 @@ export default class AudioSequence {
     // if auto-play is disabled, will prompt the user with instructions.
     this.handleAutoPlayNotAllowed()
 
-    if (this.autoStart) {
-      if (document.readyState === 'complete') this.load()
-      else document.addEventListener('DOMContentLoaded', () => this.load())
-    }
+    // auto start playing audio, or wait for DOM to load.
+    if (this.autoStart) this.waitForDOM(this.load)
   }
 
   handleEnding (event) {
@@ -86,9 +88,11 @@ export default class AudioSequence {
       }
 
       const commonNext = () => {
-        this.current = nextIndex
-        nextItem.repeats = 1
-        return zeroAndPlay(nextItem)
+        if (nextItem) {
+          this.current = nextIndex
+          nextItem.repeats = 1
+          return zeroAndPlay(nextItem)
+        } else resolve(element)
       }
 
       if (this.repeatEach) {

@@ -13,12 +13,6 @@ module.exports = {
     return { nextIndex, nextItem: array[nextIndex] }
   },
 
-  delay (callback = Function, mSeconds = 1000) {
-    return new Promise(resolve => {
-      return setTimeout(() => resolve(callback()), mSeconds || this.repeatDelay)
-    })
-  },
-
   findFile (file = '') {
     return this.playlist[this.playlist.map(ele => ele.src).indexOf(file)]
   },
@@ -27,6 +21,12 @@ module.exports = {
     const promise = new Promise(resolve => callback(resolve))
 
     this[pre ? 'prePromises' : 'postPromises'].push(promise)
+  },
+
+  waitForDOM (callback = Function) {
+    return document.readyState === 'complete'
+      ? callback()
+      : window.addEventListener('DOMContentLoaded', () => callback())
   },
 
   handleAutoPlayNotAllowed () {
@@ -38,9 +38,18 @@ module.exports = {
       !this.isAutoPlayEnabled(error) && this.createOverlayInstructions())
   },
 
-  isChrome () { return window.navigator.vendor === 'Google Inc.' && window.navigator.userAgent.includes('Chrome') },
   isFirefox () { return !this.isChrome() && window.navigator.userAgent.includes('Firefox') },
-  isSafari () { return !this.isChrome() && window.navigator.userAgent.includes('Safari') },
   isEdge () { return !this.isChrome() && window.navigator.userAgent.includes('Edge') },
+  isOpera () { return !this.isChrome() && window.navigator.userAgent.includes('OPR') },
+  isSafari () {
+    return !this.isOpera() && !this.isChrome() &&
+           window.navigator.userAgent.includes('Safari')
+  },
+  isChrome () {
+    return window.navigator.vendor === 'Google Inc.' &&
+           window.navigator.userAgent.includes('Chrome') &&
+           !window.navigator.userAgent.includes('OPR')
+  },
+
   isAutoPlayEnabled (error) { return !(error.name === 'NotAllowedError') }
 }
