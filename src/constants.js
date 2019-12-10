@@ -47,6 +47,7 @@ module.exports = {
     header.innerHTML = this.autoplayMessage
 
     image.src = Object.keys(this.demoSources()).find(src => !!this.demoSources()[src])
+    image.style.width = '90%'
     image.alt = 'How to enable Auto-Play permission.'
 
     div.appendChild(header)
