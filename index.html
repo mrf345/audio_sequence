@@ -9,17 +9,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    <script src="./extra.js"></script>
-    <script src="./AudioSequence.min.js"></script>
+    <script src="./bin/extra.js"></script>
+    <script src="./bin/AudioSequence.min.js"></script>
     <script>
     var player = new AudioSequence({
       autoStart: true,
       files: [
         'music/1.mp3',
         'music/2.mp3',
-        'music/3.mp3',
-        'music/4.mp3'
-      ].map(function (i) { return 'https://audio-sequence.github.io/' + i })
+        'music/3.mp3'
+      ].map(function (i) { return 'https://mrf345.github.io/audio-sequence/' + i })
     })
 
     player.load()
