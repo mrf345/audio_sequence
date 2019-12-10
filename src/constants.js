@@ -2,7 +2,20 @@ module.exports = {
   silence: (
     'data:audio/wave;base64,UklGRjIAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAAABmYWN0' +
     'BAAAAAAAAABkYXRhAAAAAA=='),
+
+  demoSources () {
+    return {
+      'https://mrf345.github.io/audiosequence/demos/firefox.gif': this.isFirefox(),
+      'https://mrf345.github.io/audiosequence/demos/safari.gif': this.isSafari(),
+      'https://mrf345.github.io/audiosequence/demos/chrome.gif': this.isChrome(),
+      'https://mrf345.github.io/audiosequence/demos/opera.gif': this.isOpera()
+    }
+  },
+
   createOverlayInstructions () {
+    // cut circuit if feature's disabled
+    if (!this.autoplayWarning) return
+
     const id = 'OverLayAutoPlay'
     const exists = document.getElementById(id)
     if (exists) document.removeChild(exists)
@@ -23,30 +36,23 @@ module.exports = {
     overlay.style.display = 'flex'
     overlay.style.alignItems = 'center'
     overlay.style.justifyContent = 'center'
-    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)'
 
     header.style.color = 'rgb(255, 255, 255)'
     header.style.fontFamily = 'Georgia, Times, serif'
-    header.style.textShadow = '0 0 25px rgba(255,255,255,0.4)'
-    header.style.fontSize = '130%'
+    header.style.textShadow = '0 0 5px rgba(255,255,255,0.7)'
+    header.style.fontSize = '150%'
     header.style.marginBottom = '5%'
-
-    header.innerHTML = 'Auto-Play permission is not enabled. Enable it then reload:'
     header.style.textAlign = 'center'
+    header.innerHTML = this.autoplayMessage
 
-    const imageSources = {
-      'https://audio-sequence.github.io/firefox.gif': this.isFirefox(),
-      'https://audio-sequence.github.io/safari.gif': this.isSafari(),
-      'https://audio-sequence.github.io/chrome.gif': this.isChrome(),
-      'https://audio-sequence.github.io/edge.gif': this.isEdge()
-    }
-
-    image.src = Object.keys(imageSources).find(src => !!imageSources[src])
-    image.alt = 'How to enable Auto-Play permission'
+    image.src = Object.keys(this.demoSources()).find(src => !!this.demoSources()[src])
+    image.alt = 'How to enable Auto-Play permission.'
 
     div.appendChild(header)
     div.appendChild(image)
     overlay.appendChild(div)
-    document.body.appendChild(overlay)
+
+    this.waitForDOM(() => document.body.appendChild(overlay))
   }
 }

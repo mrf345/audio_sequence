@@ -1,27 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <script src="./AudioSequence.min.js"></script>
-  <script>
-  var Player = new AudioSequence({
-    files: [
-      'music/1.mp3',
-      'music/2.mp3',
-      'music/3.mp3',
-      'music/4.mp3'
-    ].map(i => 'https://audio-sequence.github.io/' + i)
-  })
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>audio_sequence 0.1 beta - Demo</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="./extra.js"></script>
+    <script src="./AudioSequence.min.js"></script>
+    <script>
+    var player = new AudioSequence({
+      autoStart: true,
+      files: [
+        'music/1.mp3',
+        'music/2.mp3',
+        'music/3.mp3',
+        'music/4.mp3'
+      ].map(function (i) { return 'https://audio-sequence.github.io/' + i })
+    })
 
-    Player.load()
-    .then(function(audios) { 
-      Player.play()
-    }).catch(function(error) { console.warn(error) })
-  </script>
-</body>
+    player.load()
+      .then(function(audios) { 
+        addFinal()
+        progress()
+        fileAdd()
+      }).catch(function(error) { console.warn(error) })
+    </script>
+    <style>
+    div.list {
+      margin-top: 4%;
+    }
+    .row > div {
+      margin-top: 3%;
+    }
+    .controls {
+      margin-top: 0%;
+    }
+    a.btn {
+      font-weight: bold;
+    }
+    #pgbarc {
+      font-size: 140%;
+      font-weight: bold;
+      font-stretch: expanded;
+    }
+    .title {
+      font-size: 170%;
+      font-weight: bold;
+      font-style: oblique;
+      font-stretch: extra-expanded;
+    }
+    ol {
+      list-style-type: decimal-leading-zero;
+      border: thin dotted rgb(0, 52, 208);
+      border-radius: 5%
+    }
+    li {
+      margin-top: 3%;
+      font-size: 150%;
+      font-stretch: extra-condensed;
+
+    }
+    li > span {
+      margin-left: 2%;
+    }
+    li > span:hover, .btn:hover {
+      filter: brightness(0.5);
+      cursor: pointer;
+      transition: all 0.7s ease-in-out;
+      transition-property: all;
+      transition-duration: 0.7s;
+      transition-timing-function: ease-in-out;
+      transition-delay: 0s;
+    }
+    .inline > h3, h4 {
+      display: inline;
+      margin-right: 1%;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-xs-12"><span class="fa fa-refresh text-danger fa-5x loading"></span></div>
+        <div class="col-md-12 hidden-xs hidden-sm">
+          <div class="btn-group-justified">
+            <a onclick='player.play()' class='btn btn-large btn-primary'>
+              <span class='fa fa-play'></span>
+              Play
+            </a>
+            <a onclick='player.pause()' class='btn btn-large btn-warning'>
+              <span class='fa fa-pause'></span>
+                Pause
+            </a>
+            <a onclick='player.play()' class='btn btn-large btn-primary'>
+              <span class='fa fa-refresh'></span>
+              Resume
+            </a>
+            <a onclick='player.stop()' class='btn btn-large btn-danger'>
+              <span class='fa fa-stop'></span>
+              Stop
+            </a>
+            <a onclick='player.replay()' class='btn btn-large btn-primary'>
+              <span class='fa fa-reply'></span>
+              Replay
+            </a>
+          </div>
+        </div>
+        <div class="col-xs-12 hidden-lg hidden-md">
+          <div class="btn-group-justified">
+            <a onclick='player.play()' class='btn btn-large btn-primary'>
+              <span class='fa fa-play'></span>
+              Play
+            </a>
+            <a onclick='player.pause()' class='btn btn-large btn-warning'>
+              <span class='fa fa-pause'></span>
+                Pause
+            </a>
+            <a onclick='player.play()' class='btn btn-large btn-primary'>
+              <span class='fa fa-refresh'></span>
+              Resume
+            </a>
+          </div>
+        </div>
+        <div class="col-xs-12 hidden-lg hidden-md">
+          <div class="btn-group-justified">
+            <a onclick='player.stop()' class='btn btn-large btn-danger'>
+              <span class='fa fa-stop'></span>
+              Stop
+            </a>
+            <a onclick='player.replay()' class='btn btn-large btn-primary'>
+              <span class='fa fa-reply'></span>
+              Replay
+            </a>
+          </div>
+        </div>
+        <div class="col-xs-10 col-xs-offset-1 progrss">
+          <div class="progress">
+    			    <div id="pgbarc" class="progress-bar progress-bar-danger progress-bar-striped active"
+    			        role="progressbar" aria-valuenow="50" aria-valuemin="0.00"
+                  style="width:50%">
+    			     </div>
+    			</div>
+        </div>
+        <div class="col-md-12 hidden-xs hidden-sm">
+          <div class='btn-group-justified'>
+            <a onclick='player.previous()' class='btn btn-large btn-primary'>
+              <span class='fa fa-arrow-left hidden-xs'></span>
+              Previous
+            </a>
+            <a onclick='player.next()' class='btn btn-large btn-primary'>
+              <span class='fa fa-arrow-right'></span>
+              Next
+            </a>
+            <a onclick='player.backward()' class='btn btn-large btn-primary'>
+              <span class='fa fa-backward hidden-xs'></span>
+              Backward
+            </a>
+            <a onclick='player.forward()' class='btn btn-large btn-primary'>
+              <span class='fa fa-forward hidden-xs'></span>
+              Forward
+            </a>
+            <a onclick='player.mute()' class='btn btn-large btn-danger'>
+              <span class='fa fa-headphones'></span>
+              Mute
+            </a>
+            <a onclick='player.unmute()' class='btn btn-large btn-warning'>
+              <span class='fa fa-headphones'></span>
+              Unmute
+            </a>
+          </div>
+        </div>
+        <div class="col-xs-12 hidden-md hidden-lg">
+          <div class='btn-group-justified'>
+            <a onclick='player.previous()' class='btn btn-large btn-primary'>
+              <span class='fa fa-arrow-left hidden-xs'></span>
+              Previous
+            </a>
+            <a onclick='player.next()'class='btn btn-large btn-primary'>
+              <span class='fa fa-arrow-right'></span>
+              Next
+            </a>
+            <a onclick='player.backward()' class='btn btn-large btn-primary'>
+              <span class='fa fa-backward hidden-xs'></span>
+              Backward
+            </a>
+          </div>
+        </div>
+        <div class="col-xs-12 hidden-md hidden-lg">
+          <div class='btn-group-justified'>
+            <a onclick='player.forward()' class='btn btn-large btn-primary'>
+              <span class='fa fa-forward hidden-xs'></span>
+              Forward
+            </a>
+            <a onclick='player.mute()' class='btn btn-large btn-danger'>
+              <span class='fa fa-headphones'></span>
+              Mute
+            </a>
+            <a onclick='player.unmute()' class='btn btn-large btn-warning'>
+              <span class='fa fa-headphones'></span>
+              Unmute
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class='row'>
+        <div class="col-xs-10 col-xs-offset-1 progrss">
+          <form class='vertical-form'>
+            <input id='repeats' type='text-field' placeholder="Repeat for a number of repeats .."
+            class='form-control' min="1" />
+            <div class='btn-group-justified'>
+              <a onclick='player.repeats = $("#repeats").val(); player.each()' class='btn btn-danger'>
+                Repeat each file
+              </a>
+              <a onclick='player.repeats = $("#repeats").val(); player.whole()' class='btn btn-danger'>
+                Repeat whole list
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class='row text-center'>
+        <div class="col-xs-12 col-md-5 col-md-offset-1 list">
+          <h3 class='title text-danger'>
+            Play list:
+          </h3>
+          <ol class="playlist">
+          </ol>
+        </div>
+        <div class="col-xs-12 col-md-5 list">
+          <h3 class='title text-danger'>
+            Files list:
+          </h3>
+          <ol class="fileslist">
+          </ol>
+        </div>
+      </div>
+  </body>
 </html>
