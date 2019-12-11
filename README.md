@@ -97,12 +97,12 @@ List of typical music player like methods:
 | `.mute()` | N/A | `boolean` | mute all audio files. |
 | `.unmute(volume = 0.5)` | `volume`: volume to unmute with. | `boolean` | unmute all audio files. |
 | `.each()` | N/A | N/A | activate repeat each file for the number of `Player.repeats` mode. |
-| `.while()` | N/A | N/A | activate repeat the whole playlist for the number of `Player.repeats` mode. |
+| `.whole()` | N/A | N/A | activate repeat the whole playlist for the number of `Player.repeats` mode. |
 | `.forever()` | N/A | N/A | activate forever mode to disregard `Player.repeats` and repeat forever. |
 | `.add(file = '')` | `file`: audio file's link. | `Promise()` | load and add file to the playlist. |
 | `.remove(file = '')` | `file`: audio file's link. | `boolean` | remove file from the playlist. |
 | `.load()` | N/A | `Promise()` | to load `Player.files` manually with a `Promise` that resolves when all files are loaded. |
 
 ### Example:
-There's a bit old and dated [live example](https://mrf345.github/audio_sequence),
+There's a bit old and dated [live example](https://mrf345.github.io/audio_sequence),
 that was created when `JQuery` was a requirement "no longer it is". But it still works and serves the purpose.
