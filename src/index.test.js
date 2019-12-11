@@ -70,7 +70,26 @@ describe('Testing module main functionalities and units.', () => {
 
   it('Test autoplay policy instructions overlay', () => {
     self.player.autoStart = true
+
+    expect.assertions(1)
     return self.player.load()
       .then(files => expect(document.getElementById('OverLayAutoPlay')).toBeTruthy())
+  })
+
+  it('Test adding a new file promise', () => {
+    const file = 'http://test.com/1.mp3'
+
+    expect.assertions(1)
+    return self.player.add(file)
+      .then(element => expect(element.src).toEqual(file))
+  })
+
+  it('Test adding already existing file rejection', () => {
+    const file = 'http://test.com/1.mp3'
+
+    expect.assertions(1)
+    return self.player.add(file)
+      .then(e => self.player.add(file)
+        .catch(error => expect(error.message).toEqual('File already exists.')))
   })
 })

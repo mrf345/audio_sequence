@@ -1,196 +1,107 @@
-# audio_sequence (Beta)
+<h1 align='center'> audio_sequence </h1>
+<h5 align='center'>Front-End utility to ease the process of plying audio elements in sequences.</h5>
+<p align='center'>
+  <a href='https://travis-ci.org/mrf345/audio_sequence'> <img src='https://travis-ci.org/mrf345/audio_sequence.svg?branch=master' alt='Build Status' /></a>
+  <a href='https://coveralls.io/github/mrf345/audio_sequence?branch=master'><img src='https://coveralls.io/repos/github/mrf345/audio_sequence/badge.svg?branch=master' alt='Coverage Status' /></a>
+  <a href='https://www.npmjs.com/package/@mrf3/audio_sequence'><img src='https://img.shields.io/npm/v/@mrf3/audio_sequence' /></a>
+  <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
+</p>
 
-## TODO:
+<br /><br />
 
-- [x] Fix babeling IE11 Bug
-- [x] Add repeat delay to handle endings
-- [x] Add unit tests 
-- [x] Move project and setup configuration files `nodejs`, `babel`, `webpack`
-- [x] Setup travis and coveralls
-- [ ] Update and cleanup `README` to reflect changes
-- [ ] Setup gh-pages branch and example
-- [x] Add cross-platform auto-play warning
+<p align='center'>
+<img width='80%' src='https://mrf345.github.io/audio_sequence/demos/console.gif' />
+</p>
+### Install:
 
-### [jQuery][d17250b1] based script that allows you to control, monitor and play multiple audio files in sequences at a time.
-
-  [d17250b1]: https://jquery.com "jquery website"
-
-## [Live Demo][d5c4a4d8]
-
-  [d5c4a4d8]: https://audio-sequence.github.io "Live demo"
-
-![Demo GIF](https://audio-sequence.github.io/audio_sequence.gif)
-
-## Features:
-- Repeat whole: allows you to repeat a list of audio files as whole for a given number of repeats
-- Repeat each: allows you to repeat each file of list of audio files for a certain number of repeats
-- Repeat forever: allows you to repeat a list of audio files as whole forever !
-- Repeat delay: allows you to add a delay in-between repeats
-- Log: logs music player like interface from the console
-
-## Setup:
-#### - From NPM:
-```bash
-npm install --save audio_sequence
-```
+##### NPM: to bundle it however you like:
+- To install it:
+`npm i audio_sequence --save`
+- To import it:
 ```javascript
+// ES5
+const AudioSequence = require('audio_sequence').default
+
+// ES6
 import AudioSequence from 'audio_sequence'
-const player = AudioSequence(
-  {
-    files: ['1.mp3', '2.mp3', '3.mp3', '4.mp3'],
-    repeat_whole: 'true',
-    repeats: 5
-  }
-)
-player.log(true)
 ```
 
-#### - From browser:
+##### Browser:
+- You can get the latest bundle from [here](https://gitcdn.xyz/repo/mrf345/audio_sequence/master/bin/AudioSequence.min.js)
+- To Import it:
 ```html
-<head>
-  <script src='https://rawgit.com/mrf345/audio_sequence/master/bin/bundle.js'
-  type='text/javascript'></script>
-  <script type='text/javascript'>
-    const player = AudioSequence({
-      files: ['1.mp3', '2.mp3', '4.mp3'],
-      repeat_forever: 'true'
-    })
-  </script>
-</head>
+<script src="https://gitcdn.xyz/repo/mrf345/audio_sequence/master/bin/AudioSequence.min.js"></script>
+<script>
+  var Player = new AudioSequence()
+</script>
 ```
 
-## Options:
+### Support:
+Should work with anything newer than `Internet Explorer 10` and `NodeJS 12`.
+
+### Usage:
 ```javascript
-options = {
-  files: [], // audio files inserted will be stored in
-  repeats: 0, // number of repeats to obey with some adjustments later
-  repeat_whole: 'true', // repeat all files as whole for the number of repeats
-  repeat_each: 'false', // repeat each file for the number of repeats [You can not select both !]
-  repeat_forever: 'false', // to keep repeating endlessly, only works on repeat whole
-  repeat_delay: 0, // to add a time delay between each repeat in seconds
-  reverse_order: 'false', // to reverse the order list of audio files
-  shuffle_order: 'false', // to randomly shuffle the order of the files list
-  volume: options.volume || 0.5, // to set the default volume > 0 && < 1
-  auto_start: 'true', // to auto start playing as the module loads
-  cleanup: 'true' // to clean up after existing
-}
+var Player = new AudioSequence(
+    /**
+     * Utility to help import html templates and parse them minimally.
+     * @param {object} options contains the module options.
+     *
+     *`options` = {
+     *  files: [], // files inserted will be stored in
+     *  repeats: 1, // number of repeats to obey with some adjustments later
+     *  repeat_whole: true, // repeat all files as whole
+     *  repeat_each: false, // repeat each file for the number of repeats
+     *  repeat_forever: false, // to keep repeating endlessly
+     *  repeat_delay: 0, // to add a time delay between each repeat
+     *  reverse_order: false, // to reverse the order list of audio files
+     *  shuffle_order: false, // to randomly shuffle the order of the files list
+     *  volume: 0.5, // to set the default volume
+     *  auto_start: false, // to auto load and start playing as the module loads
+     *  autoplay_warning: true, // to display warning if AutoPlay's disabled
+     *  autoplay_message: 'message' // message to show if AutoPlay's disabled
+     * 
+     *  NOTE: if both `repeat_each` and `repeat_whole` are `true`. In any case
+     *        `repeat_each` will always take precedence.
+     * }
+     */
+)
+
+// if the default options work for you out-of-the-box. this should load it:
+Player.load()
+  .then(function(audios) { console.log(audios) })
+  .catch(function(error) { console.warn(error) })
 ```
 
-## Useful functions:
-#### To use any of the following functions, you have to get an instance of the constructor, which we did in the Setup section :
-` const player = AudioSequence()` </br>
-` player.following_functions()`
 
-#### - Play list :
-```javascript
-playlist = function playlist (check) {
-  // to log the list of audio elements and their properties
-}
+### Features:
+- Repeat whole: allows you to repeat a list of audio files as whole for a given number of repeats or forever.
+- Repeat each: allows you to repeat each file of list of audio files for a certain number of repeats.
+- Repeat delay: allows you to add a delay in-between repeats.
+- `AutoPlay` policy notification: notify the user with an overlay instructions to how to enable `AutoPlay`.
 
-log = function log (doornot) {
-  // to a live list of the playing elements and quit whenever done playing
-}
+### Interface:
+List of typical music player like methods:
 
-list = function list (onlyPlaying = false) {
-  // to return html ready list of elments
-}
-```
 
-#### - List order :
-```javascript
-shuffle = function shuffle () {
-  // picking items from the array randomly and reinserting them, to create shuffle like effect
-}
+| Method | Input | Output | Description|
+|---------|--------|--------|----------|
+| `.play(file = '')` | `file`: audio file's link.  | `boolean` | to start playing the added audio files. |
+| `.replay()` | N/A | `boolean` | restart playing the added audio files. |
+| `.stop()` | N/A | `boolean` | stop playing all added audio files. |
+| `.pause()` | N/A | `boolean` | pause the currently playing audio. |
+| `.next()` | N/A | `boolean` | play the next file in the playlist. |
+| `.previous()` | N/A | `boolean` | play the previous file in the playlist. | 
+| `.forward(seconds = 0)` | `seconds`: number of seconds to forward with. | `boolean` | forward the currently playing audio. |
+| `.backward(seconds = 0)` | `seconds`: number of seconds to backward with. | `boolean` | backward the currently playing audio. |
+| `.mute()` | N/A | `boolean` | mute all audio files. |
+| `.unmute(volume = 0.5)` | `volume`: volume to unmute with. | `boolean` | unmute all audio files. |
+| `.each()` | N/A | N/A | activate repeat each file for the number of `Player.repeats` mode. |
+| `.while()` | N/A | N/A | activate repeat the whole playlist for the number of `Player.repeats` mode. |
+| `.forever()` | N/A | N/A | activate forever mode to disregard `Player.repeats` and repeat forever. |
+| `.add(file = '')` | `file`: audio file's link. | `Promise()` | load and add file to the playlist. |
+| `.remove(file = '')` | `file`: audio file's link. | `boolean` | remove file from the playlist. |
+| `.load()` | N/A | `Promise()` | to load `Player.files` manually with a `Promise` that resolves when all files are loaded. |
 
-reverse = function reverse () {
-  // to reverse the order of elements ID list
-}
-```
-
-#### - Control audio:
-- List of typical music player like functions
-
-```javascript
-play = function play () {
-  // to strart playing elements added to the list
-}
-
-replay = function replay () {
-  // to restart playing the list
-}
-
-stop = function stop () {
-    // to stop playing all unended elements
-}
-
-pause = function pause () {
-  // to pause the currently played element
-}
-
-resume = function resume () {
-  // to resume the currently paused element
-}
-
-previous = function previous () {
-  // to move the list of elements backward to play previous element
-}
-
-next = function next () {
-  // moving the list of elements forward by one element, to play next element
-}
-
-forward = function forward (seconds) {
-  // to forward the duration of audio element with seconds or portion of it
-}
-
-backward = function backward (seconds) {
-  // to forward the duration of audio element with seconds or portion of it
-}
-
-mute = function mute () {
-  // to mute all audio elements
-}
-
-unmute = function unmute () {
-  // to unmute all audio elements
-}
-
-repeat_forever = function repeatForever () {
-  // to set repeat_forever and replay
-}
-
-```
-
-#### - Manage files:
-
-```javascript
-add_file = function addFile (file) {
-  // adding an audio file into the playing list
-}
-
-remove_file = function removeFile (id) {
-  // remove file using ID index number, file index can mismatch but ids do not
-}
-```
-
-#### - Cleanup and exit:
-
-```javascript
-abort = function abort () {
-  // make sure all created elements events are off
-}
-
-empty = function empty () {
-  // to remove created audio elements from the DOM
-}
-
-exit = function exit (msg = true) {
-  // to gracefully exist, with a thorough cleanup
-}
-```
-
-## Dependencies:
-- jQuery
-
-## Known issues:
-- repeat_each while more than one repeat is set, doesn't play well with the music player like functions next(), previous() ...
+### Example:
+There's a bit old and dated [live example](https://mrf345.github/audio_sequence),
+that was created when `JQuery` was a requirement "no longer it is". But it still works and serves the purpose.
