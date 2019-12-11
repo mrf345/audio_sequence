@@ -5,11 +5,13 @@
   <a href='https://coveralls.io/github/mrf345/audio_sequence?branch=master'><img src='https://coveralls.io/repos/github/mrf345/audio_sequence/badge.svg?branch=master' alt='Coverage Status' /></a>
   <a href='https://www.npmjs.com/package/@mrf3/audio_sequence'><img src='https://img.shields.io/npm/v/@mrf3/audio_sequence' /></a>
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
-
-  <br /><br />
-  <img width='60%' src='https://audio-sequence.github.io/audio_sequence.gif' />
 </p>
 
+<br /><br />
+
+<p align='center'>
+<img width='80%' src='https://mrf345.github.io/audio_sequence/demos/console.gif' />
+</p>
 ### Install:
 
 ##### NPM: to bundle it however you like:
