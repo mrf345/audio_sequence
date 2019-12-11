@@ -44,18 +44,22 @@ module.exports = {
   },
 
   add (file = '') {
-    const exists = !!this.playlist.find(e => e.src === file)
+    return new Promise((resolve, reject) => {
+      const exists = !!this.playlist.find(e => e.src === file)
 
-    !exists && this.loader(file).then(element => {
-      this.playlist.push(element)
+      if (!exists) {
+        this.loader(file).then(element => {
+          this.playlist.push(element)
 
-      if (this.autoStart) {
-        this.pause(true)
-        this.play(file)
-      }
+          if (this.autoStart) {
+            this.pause(true)
+            this.play(file)
+          }
+
+          resolve(element)
+        }).catch(error => reject(error))
+      } else reject(Error('File already exists.'))
     })
-
-    return !exists
   },
 
   remove (file = '') {

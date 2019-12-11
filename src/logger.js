@@ -25,7 +25,7 @@ module.exports = {
           `[Repeats: ${activeRepeat}]   [Delay Seconds: ${(this.repeatDelay / 1000).toFixed(2)}]` +
           `   [Paused: ${this.isPaused()}]   [Muted: ${this.isMuted()}]`
         )
-      }, 1000)
+      }, this.isFirefox() ? 100 : 1000)
     }
   }
 }
