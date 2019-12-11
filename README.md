@@ -3,7 +3,7 @@
 <p align='center'>
   <a href='https://travis-ci.org/mrf345/audio_sequence'> <img src='https://travis-ci.org/mrf345/audio_sequence.svg?branch=master' alt='Build Status' /></a>
   <a href='https://coveralls.io/github/mrf345/audio_sequence?branch=master'><img src='https://coveralls.io/repos/github/mrf345/audio_sequence/badge.svg?branch=master' alt='Coverage Status' /></a>
-  <a href='https://www.npmjs.com/package/@mrf3/audio_sequence'><img src='https://img.shields.io/npm/v/@mrf3/audio_sequence' /></a>
+  <a href='https://www.npmjs.com/package/audio_sequence'><img src='https://img.shields.io/npm/v/audio_sequence' /></a>
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Standard - JavaScript Style Guide"></a>
 </p>
 
