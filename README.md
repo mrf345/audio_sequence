@@ -12,6 +12,7 @@
 <p align='center'>
 <img width='80%' src='https://mrf345.github.io/audio_sequence/demos/console.gif' />
 </p>
+
 ### Install:
 
 ##### NPM: to bundle it however you like:
