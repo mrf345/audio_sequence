@@ -42,9 +42,11 @@ export default class AudioSequence {
     this.getCurrent = () => ({ index: this.current, item: this.playlist[this.current] })
     this.getNext = p => this.keepWithin(p ? this.current - 1 : this.current + 1, this.playlist)
     this.isMuted = () => this.hasFiles() && this.getCurrent().item.volume === 0
-    this.getPlace = ele => this.files.indexOf(ele.src)
     this.isPaused = () => this.hasFiles() && this.getCurrent().item.paused
     this.notStarted = () => !this.isPaused() && !this.isActive()
+    this.getPlace = ele => this.files
+      .map(f => f.replace(window.origin, ''))
+      .indexOf(ele.src.replace(window.origin, ''))
     this.isActive = item => {
       if (this.hasFiles()) {
         item = item || this.getCurrent().item
@@ -52,7 +54,6 @@ export default class AudioSequence {
       } else return false
     }
 
-    // Loading mix-ins. since multi inheritance not supported yet 🤪
     this.mixIns = ['utils', 'constants', 'fetcher', 'controller', 'repeater', 'logger']
     this.mixIns.forEach(mixin => Object.assign(this, require(`./${mixin}`)))
 
@@ -77,7 +78,6 @@ export default class AudioSequence {
         element.volume = this.volume
         element.currentTime = 0
 
-        // will have to handle new Promise here. taking `.play` anywhere else is illegal now 🤣
         const promise = (this.repeatEach || this.repeatWhole) && this.repeatDelay
           ? new Promise(resolve => setTimeout(() => resolve(element.play()), this.repeatDelay))
           : element.play()

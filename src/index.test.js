@@ -45,11 +45,12 @@ describe('Testing module main functionalities and units.', () => {
   })
 
   it('Test adding multiple audio files are loaded', () => {
-    expect.assertions(2)
+    expect.assertions(3)
     return self.player.load()
       .then(files => {
         expect(files.map(f => f.src)).toEqual(self.files)
         expect(self.player.playlist).toEqual(files)
+        expect(self.player.files).toEqual(files.map(f => f.src.replace(window.origin, '')))
       })
   })
 
