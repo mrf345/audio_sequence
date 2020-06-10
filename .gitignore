@@ -62,4 +62,3 @@ typings/
 
 # ignore npm package babeled code
 lib/
-bin/
