@@ -51,6 +51,7 @@ export default class AudioSequence {
     this.getNext = p => this.keepWithin(p ? this.current - 1 : this.current + 1, this.playlist)
     this.isMuted = () => this.hasFiles() && this.getCurrent().item.volume === 0
     this.isPaused = () => this.hasFiles() && this.getCurrent().item.paused
+    this.isLast = () => (this.playlist.length - 1) === this.current
     this.notStarted = () => !this.isPaused() && !this.isActive()
     this.getPlace = ele => this.files
       .map(f => f.replace(window.origin, ''))
@@ -69,7 +70,7 @@ export default class AudioSequence {
     this.handleAutoPlayNotAllowed()
 
     // auto start playing audio, or wait for DOM to load.
-    if (this.autoStart) this.waitForDOM(this.load)
+    if (this.autoStart) this.waitForDOM(this.load.bind(this))
   }
 
   handleEnding (event) {
@@ -100,7 +101,7 @@ export default class AudioSequence {
           this.current = nextIndex
           nextItem.repeats = 1
           return zeroAndPlay(nextItem)
-        } else resolve(element)
+        } else return resolve(element)
       }
 
       if (this.repeatEach) {
@@ -108,7 +109,8 @@ export default class AudioSequence {
 
         if (repeats >= this.repeats && !this.repeatForever) {
           element.repeats = 0
-          return commonNext()
+
+          return this.isLast() ? resolve(element) : commonNext()
         } else {
           element.repeats = repeats + 1
           return zeroAndPlay(element)
