@@ -14,18 +14,19 @@ export default class AudioSequence {
    */
   constructor (options = {}) {
     const AUTOPLAY_MSG = 'AutoPlay permission is lacking. Enable it then reload:'
+    const b = (value, defValue) => value === undefined ? defValue : !!value
 
     this.files = options.files || [] // files inserted will be stored in
     this.repeats = options.repeats || 1 // number of repeats to obey with some adjustments later
-    this.repeatWhole = options.repeat_whole || true // repeat all files as whole
-    this.repeatEach = options.repeat_each || false // repeat each file for the number of repeats
-    this.repeatForever = options.repeat_forever || false // to keep repeating endlessly
+    this.repeatWhole = b(options.repeat_whole, true) // repeat all files as whole
+    this.repeatEach = b(options.repeat_each, false) // repeat each file for the number of repeats
+    this.repeatForever = b(options.repeat_forever, false) // to keep repeating endlessly
     this.repeatDelay = options.repeat_delay * 1000 || 0 // to add a time delay between each repeat
-    this.reverseOrder = options.reverse_order || false // to reverse the order list of audio files
-    this.shuffleOrder = options.shuffle_order || false // to randomly shuffle the order of the files list
+    this.reverseOrder = b(options.reverse_order, false) // to reverse the order list of audio files
+    this.shuffleOrder = b(options.shuffle_order, false) // to randomly shuffle the order of the files list
     this.volume = options.volume || 0.5 // to set the default volume
-    this.autoStart = options.auto_start || false // to auto load and start playing as the module loads
-    this.autoplayWarning = options.autoplay_warning || true // to display warning if AutoPlay's disabled
+    this.autoStart = b(options.auto_start, false) // to auto load and start playing as the module loads
+    this.autoplayWarning = b(options.autoplay_warning, true) // to display warning if AutoPlay's disabled
     this.autoplayMessage = options.autoplay_message || AUTOPLAY_MSG // message to show if AutoPlay's disabled
 
     this.playlist = [] // stack of audio elements playing
