@@ -6,6 +6,7 @@ module.exports = {
       {
         debug: false,
         targets: {
+          node: 10,
           browsers: ['last 5 version']
         }
       }
