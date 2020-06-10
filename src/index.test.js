@@ -11,69 +11,68 @@ function mockProperty (event, func) {
   } catch (e) { } // Expected redefine property error.
 }
 
-function commonSetup (self) {
+function commonSetup () {
   ['oncanplaythrough', 'onerror', 'onended'].forEach(e => mockProperty(e))
-  self.error = Error()
-  self.error.name = 'NotAllowedError'
-  window.HTMLMediaElement.prototype.play = () => Promise.reject(self.error)
-  self.host = 'http://faketesting-audiosequence.org/'
-  self.files = Array(4).fill(self.host).map((f, i) => `${f}${i}.mp3`)
-  self.player = new AudioSequence({ files: self.files })
+  this.error = Error()
+  this.error.name = 'NotAllowedError'
+  window.HTMLMediaElement.prototype.play = () => Promise.reject(this.error)
+  this.host = 'http://faketesting-audiosequence.org/'
+  this.files = Array(4).slice(1).fill(this.host).map((f, i) => `${f}${i}.mp3`)
+  this.player = new AudioSequence({ files: this.files })
 }
 
-describe('Testing module main functionalities and units.', () => {
-  const self = {}
-  beforeEach(() => commonSetup(self))
+describe('Testing module main functionalities and units.', function () {
+  beforeEach(commonSetup.bind(this))
 
   test('Test Module default parameters.', () => {
-    expect(self.player.files).toEqual(self.files)
-    expect(self.player.repeats).toEqual(1)
-    expect(self.player.repeatWhole).toEqual(true)
-    expect(self.player.repeatEach).toEqual(false)
-    expect(self.player.repeatForever).toEqual(false)
-    expect(self.player.repeatDelay).toEqual(0)
-    expect(self.player.reverseOrder).toEqual(false)
-    expect(self.player.shuffleOrder).toEqual(false)
-    expect(self.player.volume).toEqual(0.5)
-    expect(self.player.autoStart).toEqual(false)
+    expect(this.player.files).toEqual(this.files)
+    expect(this.player.repeats).toEqual(1)
+    expect(this.player.repeatWhole).toEqual(true)
+    expect(this.player.repeatEach).toEqual(false)
+    expect(this.player.repeatForever).toEqual(false)
+    expect(this.player.repeatDelay).toEqual(0)
+    expect(this.player.reverseOrder).toEqual(false)
+    expect(this.player.shuffleOrder).toEqual(false)
+    expect(this.player.volume).toEqual(0.5)
+    expect(this.player.autoStart).toEqual(false)
   })
 
   it('Test loading audio file through loader', () => {
     expect.assertions(1)
-    return self.player.loader(self.files[0])
-      .then(element => expect(element.src).toEqual(self.files[0]))
+    return this.player.loader(this.files[0])
+      .then(element => expect(element.src).toEqual(this.files[0]))
   })
 
   it('Test adding multiple audio files are loaded', () => {
     expect.assertions(3)
-    return self.player.load()
+    return this.player.load()
       .then(files => {
-        expect(files.map(f => f.src)).toEqual(self.files)
-        expect(self.player.playlist).toEqual(files)
-        expect(self.player.files).toEqual(files.map(f => f.src.replace(window.origin, '')))
+        expect(files.map(f => f.src)).toEqual(this.files)
+        expect(this.player.playlist).toEqual(files)
+        expect(this.player.files).toEqual(files.map(f => f.src.replace(window.origin, '')))
       })
   })
 
   it('Test auto teardown after loading a second time', () => {
     expect.assertions(2)
-    return self.player.load()
+    return this.player.load()
       .then(files => {
         const elementsLength = document.body.children.length
-        const playlistLength = self.player.playlist.length
+        const playlistLength = this.player.playlist.length
 
-        self.player.load()
+        this.player.load()
           .then(secondFiles => {
-            expect(self.player.playlist.length).toEqual(playlistLength)
+            expect(this.player.playlist.length).toEqual(playlistLength)
             expect(document.body.children.length).toEqual(elementsLength)
           })
       })
   })
 
   it('Test autoplay policy instructions overlay', () => {
-    self.player.autoStart = true
+    this.player.autoStart = true
 
     expect.assertions(1)
-    return self.player.load()
+    return this.player.load()
       .then(files => expect(document.getElementById('OverLayAutoPlay')).toBeTruthy())
   })
 
@@ -81,7 +80,7 @@ describe('Testing module main functionalities and units.', () => {
     const file = 'http://test.com/1.mp3'
 
     expect.assertions(1)
-    return self.player.add(file)
+    return this.player.add(file)
       .then(element => expect(element.src).toEqual(file))
   })
 
@@ -89,8 +88,8 @@ describe('Testing module main functionalities and units.', () => {
     const file = 'http://test.com/1.mp3'
 
     expect.assertions(1)
-    return self.player.add(file)
-      .then(e => self.player.add(file)
+    return this.player.add(file)
+      .then(e => this.player.add(file)
         .catch(error => expect(error.message).toEqual('File already exists.')))
   })
 })

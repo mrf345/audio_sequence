@@ -28,17 +28,17 @@ import AudioSequence from 'audio_sequence'
 ```
 
 ##### Browser:
-- You can get the latest bundle from [here](https://gitcdn.xyz/repo/mrf345/audio_sequence/master/bin/AudioSequence.min.js)
+- You can get the latest bundle from [here](https://mrf345.github.io/audio_sequence/bin/AudioSequence.min.js)
 - To Import it:
 ```html
-<script src="https://gitcdn.xyz/repo/mrf345/audio_sequence/master/bin/AudioSequence.min.js"></script>
+<script src="https://mrf345.github.io/audio_sequence/bin/AudioSequence.min.js"></script>
 <script>
   var Player = new AudioSequence()
 </script>
 ```
 
 ### Support:
-Should work with anything newer than `Internet Explorer 10` and `NodeJS 12`.
+Should work with anything newer than `Internet Explorer 10` and `NodeJS 10`.
 
 ### Usage:
 ```javascript
@@ -87,7 +87,7 @@ List of typical music player like methods:
 | Method | Input | Output | Description|
 |---------|--------|--------|----------|
 | `.play(file = '')` | `file`: audio file's link.  | `boolean` | to start playing the added audio files. |
-| `.replay()` | N/A | `boolean` | restart playing the added audio files. |
+| `.replay()` | N/A | `boolean` | restart playing the current audio file. |
 | `.stop()` | N/A | `boolean` | stop playing all added audio files. |
 | `.pause()` | N/A | `boolean` | pause the currently playing audio. |
 | `.next()` | N/A | `boolean` | play the next file in the playlist. |
@@ -103,6 +103,15 @@ List of typical music player like methods:
 | `.remove(file = '')` | `file`: audio file's link. | `boolean` | remove file from the playlist. |
 | `.load()` | N/A | `Promise()` | to load `Player.files` manually with a `Promise` that resolves when all files are loaded. |
 
-### Example:
+### Examples:
 There's a bit old and dated [live example](https://mrf345.github.io/audio_sequence),
 that was created when `JQuery` was a requirement "no longer it is". But it still works and serves the purpose.
+
+**Replaying the playlist sequence:**
+If you want to replay the whole playlist sequence rather than replaying the last audio file with `.replay()`.
+You'll have to run `Player.load().then(function() { Player.play() })` or you can automate that with setting `autoStart` option to `true`.
+
+```javascript
+Player.autoStart = true
+Player.load() // will replay automatically as soon as the tracks are loaded.
+```
