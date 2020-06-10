@@ -2,9 +2,16 @@ import '@babel/polyfill'
 import { JSDOM } from 'jsdom'
 
 if (JSDOM) {
-  // failsafe JSDOM in browsers
   global.window = new JSDOM().window
-  global.document = window.document
+  global.document = global.window.document
+
+  Object.defineProperty(global.window.HTMLMediaElement.prototype, 'play', {
+    configurable: true,
+    get () {
+      setTimeout(() => (this.onloadeddata && this.onloadeddata()))
+      return () => {}
+    }
+  })
 }
 
 export default class AudioSequence {

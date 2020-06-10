@@ -13,9 +13,15 @@ function mockProperty (event, func) {
 
 function commonSetup () {
   ['oncanplaythrough', 'onerror', 'onended'].forEach(e => mockProperty(e))
-  this.error = Error()
-  this.error.name = 'NotAllowedError'
-  window.HTMLMediaElement.prototype.play = () => Promise.reject(this.error)
+  const error = Error()
+  error.name = 'NotAllowedError'
+
+  Object.defineProperty(global.window.HTMLMediaElement.prototype, 'play', {
+    configurable: true,
+    get () { return () => Promise.reject(error) }
+  })
+
+  this.error = error
   this.host = 'http://faketesting-audiosequence.org/'
   this.files = Array(4).slice(1).fill(this.host).map((f, i) => `${f}${i}.mp3`)
   this.player = new AudioSequence({ files: this.files })
