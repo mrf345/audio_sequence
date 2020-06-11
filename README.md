@@ -115,3 +115,9 @@ You'll have to run `Player.load().then(function() { Player.play() })` or you can
 Player.autoStart = true
 Player.load() // will replay automatically as soon as the tracks are loaded.
 ```
+
+### Development:
+- Run tests with: `npm test`
+- Auto format with standardJS: `npm run format`
+- Publish new release: `npm run push`
+- Update live example: `./pages.sh`

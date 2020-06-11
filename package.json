@@ -1,14 +1,14 @@
 {
   "name": "audio_sequence",
-  "version": "0.0.19",
+  "version": "0.0.25",
   "description": "simple module to control, monitor and play multiple audio files in sequences at a time.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "standard ./src/* && jest ./src",
+    "test": "standard ./src/**/** && jest",
     "build": "./pages.sh",
-    "format": "standard --fix ./src/*",
+    "format": "standard --fix ./src/**/**",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "push": "babel --config-file ./babel.config.js src/ --out-dir lib/ && npm version patch && npm login && npm publish --access public"
+    "push": "npm version patch && babel --config-file ./babel.config.js src/ --out-dir lib/ && npm login && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/mrf345/audio_sequance#readme",
   "dependencies": {
-    "jsdom": "^15.2.1",
-    "@babel/polyfill": "^7.10.1"
+    "core-js": "^3.6.5",
+    "jsdom": "^15.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
