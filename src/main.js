@@ -1,3 +1,5 @@
+import { thisExpression } from "@babel/types"
+
 export class AudioSequence {
   /**
    * Utility to ease the process of plying audio elements in sequences.
@@ -27,6 +29,7 @@ export class AudioSequence {
     this.repeatCounter = 0 // whole repeats index counter
     this.prePromises = [] // to resolve prior to ending transition
     this.postPromises = [] // to resolve after ending transition
+    this.waiting = [] // array of files array to play after ending
     this.logger = undefined // store the logging interval
 
     this.hasFiles = () => !!this.playlist.length
@@ -35,11 +38,17 @@ export class AudioSequence {
     this.getNext = p => this.keepWithin(p ? this.current - 1 : this.current + 1, this.playlist)
     this.isMuted = () => this.hasFiles() && this.getCurrent().item.volume === 0
     this.isPaused = () => this.hasFiles() && this.getCurrent().item.paused
-    this.isLast = () => (this.playlist.length - 1) === this.current
     this.notStarted = () => !this.isPaused() && !this.isActive()
     this.getPlace = ele => this.files
       .map(f => f.replace(window.origin, ''))
       .indexOf(ele.src.replace(window.origin, ''))
+    this.isLast = () => (this.playlist.length - 1) === this.current
+    this.isFinal = () => {
+      const lastTrack = (this.playlist.length - 1) === this.current
+      const lastRepeat = this.getCurrent().item.repeats >= this.repeats
+
+      return lastTrack && (this.repeatEach ? lastRepeat : this.repeatCounter >= this.repeats)
+    }
     this.isActive = item => {
       if (this.hasFiles()) {
         item = item || this.getCurrent().item

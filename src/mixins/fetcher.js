@@ -21,6 +21,15 @@ module.exports = {
             this.prePromises = []
             this.postPromises = []
             this.loading = false
+
+            if (!this.isActive() && this.isFinal() && element.src === this.playlist.slice(-1)[0].src) {
+              const waitingFiles = this.waiting.shift()
+
+              if (waitingFiles) {
+                this.files = waitingFiles
+                this.load().then(() => !this.autoStart && this.play())
+              }
+            }
           }).catch(e => console.warn(e))
       }
 

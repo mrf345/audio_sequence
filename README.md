@@ -87,6 +87,7 @@ List of typical music player like methods:
 | Method | Input | Output | Description|
 |---------|--------|--------|----------|
 | `.play(file = '')` | `file`: audio file's link.  | `boolean` | to start playing the added audio files. |
+| `.playAfter(files = [])` | `files`: array of files to play. | N/A | play `files` after the ongoing playlist sequence is done. | 
 | `.replay()` | N/A | `boolean` | restart playing the current audio file. |
 | `.stop()` | N/A | `boolean` | stop playing all added audio files. |
 | `.pause()` | N/A | `boolean` | pause the currently playing audio. |

@@ -19,6 +19,14 @@ module.exports = {
     }
   },
 
+  playAfter (files = []) {
+    if (this.isActive()) this.waiting.push(files)
+    else {
+      this.files = files
+      this.load().then(() => !this.autoStart && this.play())
+    }
+  },
+
   replay () {
     const canReplay = this.isActive() || this.isPaused()
 

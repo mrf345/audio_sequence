@@ -1,5 +1,5 @@
 const { resolve } = require('path')
-const nodeExternals = require('webpack-node-externals')
+
 
 module.exports = [
   {
@@ -19,5 +19,5 @@ module.exports = [
         use: { loader: 'babel-loader' }
       }]
     }
-  },
+  }
 ]
