@@ -48,8 +48,8 @@ var Player = new AudioSequence(
      * @param {object} options contains the module options.
      *
      *`options` = {
-     *  files: [], // files inserted will be stored in
-     *  repeats: 1, // number of repeats to obey with some adjustments later
+     *  files: [], // files to store and play
+     *  repeats: 1, // number of repeats
      *  repeat_whole: true, // repeat all files as whole
      *  repeat_each: false, // repeat each file for the number of repeats
      *  repeat_forever: false, // to keep repeating endlessly
