@@ -27,6 +27,10 @@ module.exports = {
     }
   },
 
+  doAfter (todo) {
+    if (todo) this.afterEffects.push(todo)
+  },
+
   replay () {
     const canReplay = this.isActive() || this.isPaused()
 
