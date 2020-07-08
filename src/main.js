@@ -30,6 +30,7 @@ export class AudioSequence {
     this.prePromises = [] // to resolve prior to ending transition
     this.postPromises = [] // to resolve after ending transition
     this.waiting = [] // array of files array to play after ending
+    this.afterEffects = [] // array of functions to call after ending
     this.logger = undefined // store the logging interval
 
     this.hasFiles = () => !!this.playlist.length

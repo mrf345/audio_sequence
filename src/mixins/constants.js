@@ -18,7 +18,7 @@ module.exports = {
 
     const id = 'OverLayAutoPlay'
     const exists = document.getElementById(id)
-    if (exists) document.removeChild(exists)
+    if (exists) document.body.removeChild(exists)
 
     const overlay = document.createElement('div')
     const div = document.createElement('div')

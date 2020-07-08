@@ -103,6 +103,7 @@ List of typical music player like methods:
 | `.add(file = '')` | `file`: audio file's link. | `Promise()` | load and add file to the playlist. |
 | `.remove(file = '')` | `file`: audio file's link. | `boolean` | remove file from the playlist. |
 | `.load()` | N/A | `Promise()` | to load `Player.files` manually with a `Promise` that resolves when all files are loaded. |
+| `.doAfter()` | `todo`: function to call when playlist sequence is finished. | N/A | add a function to list of functions to execute after playlist sequence is finished. | 
 
 ### Examples:
 There's a bit old and dated [live example](https://mrf345.github.io/audio_sequence),

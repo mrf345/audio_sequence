@@ -28,7 +28,7 @@ module.exports = {
               if (waitingFiles) {
                 this.files = waitingFiles
                 this.load().then(() => !this.autoStart && this.play())
-              }
+              } else this.afterEffects.forEach(f => f())
             }
           }).catch(e => console.warn(e))
       }
