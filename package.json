@@ -28,7 +28,7 @@
   "homepage": "https://github.com/mrf345/audio_sequance#readme",
   "dependencies": {
     "core-js": "^3.6.5",
-    "jsdom": "^15.2.1"
+    "jsdom": "^16.5.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
